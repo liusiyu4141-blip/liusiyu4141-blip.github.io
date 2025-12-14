@@ -57,25 +57,22 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      /* Remove fixed height to let content dictate size, but keep constraints */
-      min-height: 200px; 
+      /* FORCE 9:16 Aspect Ratio */
+      aspect-ratio: 9 / 16;
+      max-height: 80vh; /* Safety limit */
     }
     
-    /* For YouTube Iframe: Make it fill container but respect 16:9 or similar */
     .video-frame iframe {
       width: 100%;
       height: 100%;
-      aspect-ratio: 16/9; /* Default base aspect ratio */
       object-fit: cover;
       display: block;
     }
 
-    /* For HTML5 Video (Uploaded): Remove constraints so it fits naturally */
     .video-frame video {
       width: 100%;
-      height: auto; 
-      max-height: 80vh; /* Prevent it from being taller than screen */
-      object-fit: contain; /* Ensure full video is visible without cropping */
+      height: 100%;
+      object-fit: cover; /* Fill the 9:16 frame */
       display: block;
     }
     
@@ -890,34 +887,31 @@ async function loadAboutVideo() {
         loop
         muted
         playsinline
-        class="w-full h-full object-contain"
-        style="max-height: 70vh;"
+        class="w-full h-full object-cover"
       >
         Your browser does not support the video tag.
       </video>
     `;
-    // Update container style to fit content tighter
-    $("about-video-container").style.aspectRatio = "unset";
-    $("about-video-container").style.height = "auto";
+    // Force reset any inline styles from previous logic
+    $("about-video-container").style.aspectRatio = "9 / 16";
+    $("about-video-container").style.height = ""; 
     return;
   }
 
   let shortsId = data.shortsId || DEFAULT_SHORTS_ID;
   const src = `https://www.youtube.com/embed/${shortsId}?autoplay=1&mute=1&controls=0&playsinline=1&loop=1&playlist=${shortsId}&rel=0&modestbranding=1`;
 
-  // YouTube Shorts usually vertical (9:16)
-  // We set a vertical aspect ratio for iframe to minimize black bars if it is indeed a Short
   $("about-video-container").innerHTML = `
     <iframe
       src="${src}"
       title="YouTube video player"
       frameborder="0"
       allow="autoplay; encrypted-media; picture-in-picture"
-      class="w-full h-full aspect-[9/16] md:aspect-[3/4] object-cover"
+      class="w-full h-full object-cover"
       allowfullscreen>
     </iframe>
   `;
-  $("about-video-container").style.aspectRatio = "unset"; 
+  $("about-video-container").style.aspectRatio = "9 / 16"; 
 }
 
 // Admin: Upload video file
