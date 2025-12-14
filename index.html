@@ -1,1357 +1,160 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Hua Qing | Fine Art of Gongbi</title>
-  <meta name="description" content="Discover the timeless serenity of Chinese Gongbi painting by Hua Qing." />
-
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&family=Noto+Serif+SC:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-
-  <script src="https://unpkg.com/lucide@latest"></script>
-
-  <style>
-    :root{
-      --paper-bg:#fdfbf7;
-      --ink-black:#2c2c2c;
-      --seal-red:#a83f39;
-      --jade-green:#687e75;
-    }
-    body{
-      background-color:var(--paper-bg);
-      color:var(--ink-black);
-      font-family:'Playfair Display','KaiTi',serif;
-      background-image:url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-    }
-    .font-calligraphy{font-family:'Ma Shan Zheng',cursive;}
-    .font-song-art{font-family:'ZCOOL XiaoWei',serif;}
-    .font-serif-text{font-family:'Noto Serif SC',serif;}
-    .seal{
-      display:inline-flex;align-items:center;justify-content:center;
-      width:48px;height:48px;background-color:var(--seal-red);color:#fff;border-radius:4px;
-      font-size:18px;border:2px solid #8a2e29;box-shadow:2px 2px 4px rgba(0,0,0,0.2);
-      font-family:'Ma Shan Zheng',cursive;line-height:1;padding-top:4px;
-    }
-    .nav-link{position:relative;}
-    .nav-link::after{
-      content:'';position:absolute;width:0;height:1px;bottom:0;left:50%;
-      background-color:var(--seal-red);transition:all .3s ease;transform:translateX(-50%);
-    }
-    .nav-link:hover::after{width:80%;}
-    .loader{
-      border:3px solid #f3f3f3;border-radius:50%;border-top:3px solid var(--seal-red);
-      width:24px;height:24px;animation:spin 1s linear infinite;display:inline-block;
-    }
-    @keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
-    .drop-zone{border:2px dashed var(--seal-red);background:#fff5f5;transition:all .25s;}
-    .drop-zone.dragover{background:#ffe0e0;border-color:#e11d48;}
-    .video-wrapper video{width:100%;height:100%;object-fit:cover;}
-    ::-webkit-scrollbar{width:8px}
-    ::-webkit-scrollbar-track{background:#f1f1f1}
-    ::-webkit-scrollbar-thumb{background:#ccc;border-radius:4px}
-  </style>
+<meta charset="UTF-8" />
+<title>Hua Qing | Gongbi Art</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
 </head>
 
-<body class="antialiased">
+<body class="bg-stone-50 text-stone-800">
 
-  <!-- NAV -->
-  <nav class="fixed w-full z-50 bg-[#fdfbf7]/90 backdrop-blur-sm border-b border-stone-200 transition-all duration-300" id="navbar">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between items-center h-20">
-        <div class="flex-shrink-0 flex items-center gap-4">
-          <div class="seal" data-i18n="seal">Hua</div>
-          <span class="text-xl tracking-widest text-stone-800 font-bold pt-1">HUA QING ART</span>
-        </div>
-
-        <div class="hidden md:flex space-x-8 items-center">
-          <a href="#home" class="nav-link text-stone-600 hover:text-stone-900 px-1 py-2 text-sm uppercase tracking-widest transition-colors" data-i18n="nav.home">Home</a>
-          <a href="#about-gongbi" class="nav-link text-stone-600 hover:text-stone-900 px-1 py-2 text-sm uppercase tracking-widest transition-colors" data-i18n="nav.source">The Craft</a>
-          <a href="#artist" class="nav-link text-stone-600 hover:text-stone-900 px-1 py-2 text-sm uppercase tracking-widest transition-colors" data-i18n="nav.artist">Artist</a>
-          <a href="#gallery" class="nav-link text-stone-600 hover:text-stone-900 px-1 py-2 text-sm uppercase tracking-widest transition-colors" data-i18n="nav.gallery">Gallery</a>
-          <a href="#contact" class="bg-stone-800 text-stone-100 px-6 py-2 text-xs uppercase tracking-widest hover:bg-[#a83f39] transition-colors duration-300 shadow-lg" data-i18n="nav.contact">Collect</a>
-
-          <button id="langBtn" class="ml-4 text-xs font-bold border border-stone-300 px-3 py-1 rounded hover:border-[#a83f39] hover:text-[#a83f39] transition-colors font-serif">
-            <span id="lang-btn-text">中</span>
-          </button>
-
-          <!-- AUTH STATUS -->
-          <div class="ml-2 flex items-center gap-3">
-            <button id="authBtn" class="flex items-center gap-2 text-stone-600 hover:text-[#a83f39]">
-              <i data-lucide="user" class="w-5 h-5"></i>
-              <span id="user-name-display" class="text-xs uppercase">Sign In</span>
-            </button>
-            <button id="logoutBtn" class="hidden text-xs uppercase tracking-widest text-stone-500 hover:text-[#a83f39]">Logout</button>
-            <button id="adminBtn" class="hidden text-xs uppercase tracking-widest border border-stone-300 px-3 py-1 rounded hover:border-[#a83f39] hover:text-[#a83f39]">Admin</button>
-          </div>
-        </div>
-
-        <div class="md:hidden flex items-center gap-4">
-          <button id="langBtnMobile" class="text-xs font-bold border border-stone-300 px-2 py-1 rounded"><span id="lang-btn-text-mobile">中</span></button>
-          <button id="mobile-menu-btn" class="text-stone-600 hover:text-stone-900 focus:outline-none"><i data-lucide="menu" class="w-6 h-6"></i></button>
-        </div>
-      </div>
-    </div>
-
-    <div id="mobile-menu" class="hidden md:hidden bg-[#fdfbf7] border-b border-stone-200">
-      <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-center">
-        <a href="#home" class="block px-3 py-2 text-stone-600 hover:text-[#a83f39] font-serif text-lg" data-i18n="nav.home">Home</a>
-        <a href="#about-gongbi" class="block px-3 py-2 text-stone-600 hover:text-[#a83f39] font-serif text-lg" data-i18n="nav.source">The Craft</a>
-        <a href="#artist" class="block px-3 py-2 text-stone-600 hover:text-[#a83f39] font-serif text-lg" data-i18n="nav.artist">Artist</a>
-        <a href="#gallery" class="block px-3 py-2 text-stone-600 hover:text-[#a83f39] font-serif text-lg" data-i18n="nav.gallery">Gallery</a>
-        <button id="mobileAuthBtn" class="block w-full px-3 py-2 text-stone-600 hover:text-[#a83f39] text-center font-serif text-lg">Sign In</button>
-      </div>
-    </div>
-  </nav>
-
-  <!-- HERO -->
-  <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
-    <div class="absolute inset-0 z-0">
-      <img src="https://images.unsplash.com/photo-1695519895085-c13f63810486?q=80&w=2574&auto=format&fit=crop"
-           alt="Background Texture" class="w-full h-full object-cover opacity-20">
-      <div class="absolute inset-0 bg-gradient-to-b from-[#fdfbf7] via-transparent to-[#fdfbf7]"></div>
-    </div>
-    <div class="relative z-10 text-center flex flex-col items-center p-6 w-full px-4">
-      <h2 class="text-[#a83f39] text-sm md:text-base tracking-[0.3em] md:tracking-[0.5em] mb-6 uppercase font-bold" data-i18n="hero.subtitle">The Ancient Art of Gongbi</h2>
-      <h1 class="text-4xl sm:text-5xl md:text-7xl mb-8 text-stone-800 font-serif italic tracking-wide whitespace-nowrap" data-i18n="hero.title">
-        Timeless Serenity, Painted in Silk
-      </h1>
-      <p class="text-lg md:text-2xl text-stone-600 font-light italic mb-12" data-i18n="hero.desc">"Where the microscopic world meets infinite mindfulness."</p>
-      <a href="#gallery" class="group relative inline-flex items-center justify-center px-10 py-4 overflow-hidden font-medium text-stone-600 border border-stone-400 rounded-full transition duration-300 ease-out hover:border-[#a83f39] hover:text-[#a83f39]">
-        <span class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-[#a83f39] group-hover:translate-x-0 ease">
-          <i data-lucide="arrow-right" class="w-6 h-6"></i>
-        </span>
-        <span class="absolute flex items-center justify-center w-full h-full text-stone-600 transition-all duration-300 transform group-hover:translate-x-full ease font-serif text-lg uppercase tracking-widest" data-i18n="hero.button">
-          Explore Collection
-        </span>
-        <span class="relative invisible font-serif text-lg" data-i18n="hero.button">Explore Collection</span>
-      </a>
-    </div>
-  </section>
-
-  <!-- ABOUT / VIDEO -->
-  <section id="about-gongbi" class="py-24 bg-stone-100/50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-        <div class="order-2 lg:order-1 relative group">
-          <div class="absolute -top-4 -left-4 w-full h-full border border-stone-300 z-0"></div>
-
-          <div class="video-wrapper relative z-10 shadow-lg w-full h-[400px] bg-black" id="painting-process-video">
-            <video id="about-video-el" src="https://videos.pexels.com/video-files/5532768/5532768-hd_1920_1080_25fps.mp4"
-                   controls loop muted autoplay playsinline></video>
-          </div>
-
-          <!-- Admin quick action -->
-          <div class="absolute top-2 right-2 z-20 hidden" id="video-edit-btn">
-            <button id="changeVideoBtn" class="bg-black/70 text-white p-2 rounded hover:bg-[#a83f39] transition-colors flex items-center gap-2 text-xs">
-              <i data-lucide="edit"></i> Change Video
-            </button>
-          </div>
-        </div>
-
-        <div class="order-1 lg:order-2">
-          <div class="flex items-center gap-4 mb-6">
-            <div class="h-px w-16 bg-[#a83f39]"></div>
-            <span class="text-[#a83f39] uppercase tracking-widest text-sm font-bold" data-i18n="gongbi.label">The Process</span>
-          </div>
-          <h2 class="text-4xl md:text-5xl font-serif mb-8 text-stone-800 italic" data-i18n="gongbi.title">A Thousand Strokes of Silence</h2>
-
-          <div class="space-y-6 text-stone-600 text-lg leading-loose font-serif-text">
-            <p data-i18n="gongbi.p1">
-              Gongbi (Meticulous Brush) is not merely painting; it is a form of meditation rooted in the Song Dynasty (960–1279).
-            </p>
-            <p data-i18n="gongbi.p2">
-              The process is rigorous and slow. Using brushes as fine as a single hair, the artist outlines the soul of the subject.
-            </p>
-            <p class="italic text-stone-500" data-i18n="gongbi.p3">
-              A single lotus petal may require many layers of wash to achieve its ethereal glow.
-            </p>
-          </div>
-
-          <ul class="space-y-4 font-serif text-lg mt-8">
-            <li class="flex items-center gap-3">
-              <i data-lucide="feather" class="text-[#a83f39] w-5 h-5 flex-shrink-0"></i>
-              <span class="text-stone-700" data-i18n="gongbi.list1"><strong>The Outline:</strong> Iron-wire lines that define the spirit.</span>
-            </li>
-            <li class="flex items-center gap-3">
-              <i data-lucide="droplets" class="text-[#a83f39] w-5 h-5 flex-shrink-0"></i>
-              <span class="text-stone-700" data-i18n="gongbi.list2"><strong>The Wash:</strong> Endless layers of mineral pigments.</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ARTIST -->
-  <section id="artist" class="py-24">
-    <div class="max-w-5xl mx-auto px-4 text-center">
-      <div class="mb-12 inline-block relative group">
-        <div class="relative w-40 h-40 mx-auto mb-6 rounded-full overflow-hidden border-4 border-white shadow-xl cursor-pointer" id="artist-img-container">
-          <img id="artist-img" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=2488&auto=format&fit=crop"
-               alt="Artist Portrait" class="w-full h-full object-cover">
-          <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hidden" id="artist-upload-hint">
-            <span class="text-white text-xs px-2">Admin: Click to Upload</span>
-          </div>
-        </div>
-
-        <h2 class="text-5xl font-serif text-stone-800 mb-2 italic" data-i18n="artist.name">Hua Qing</h2>
-        <p class="text-[#a83f39] font-sans text-xs uppercase tracking-[0.3em]" data-i18n="artist.title">Contemporary Master of Gongbi</p>
-
-        <input type="file" id="artistFileInput" accept="image/*" class="hidden"/>
-      </div>
-
-      <div class="prose prose-stone mx-auto text-xl leading-loose text-stone-600 max-w-3xl font-serif-text">
-        <p data-i18n="artist.bio1" class="mb-6">
-          Born in the mist-shrouded water towns of Jiangnan, Hua Qing began her dialogue with ink and silk before she could write.
-        </p>
-        <p data-i18n="artist.bio2">
-          In a world obsessed with speed, Hua Qing rebels with slowness. Her work is a sanctuary.
-        </p>
-      </div>
-
-      <div class="mt-12 flex justify-center gap-16">
-        <div class="text-center">
-          <span class="block text-5xl font-serif font-bold text-stone-800">20+</span>
-          <span class="text-xs text-stone-500 tracking-widest uppercase mt-2" data-i18n="artist.stat1">Years Devotion</span>
-        </div>
-        <div class="text-center">
-          <span class="block text-5xl font-serif font-bold text-stone-800">28</span>
-          <span class="text-xs text-stone-500 tracking-widest uppercase mt-2" data-i18n="artist.stat2">Global Exhibitions</span>
-        </div>
-        <div class="text-center">
-          <span class="block text-5xl font-serif font-bold text-stone-800">100+</span>
-          <span class="text-xs text-stone-500 tracking-widest uppercase mt-2" data-i18n="artist.stat3">Private Collections</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- GALLERY -->
-  <section id="gallery" class="py-24 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-16">
-        <span class="text-[#a83f39] uppercase tracking-widest text-xs font-bold block mb-3" data-i18n="gallery.label">Curated Collection</span>
-        <h2 class="text-5xl font-serif text-stone-800 italic" data-i18n="gallery.title">Ink & Rhythm</h2>
-      </div>
-
-      <div class="flex justify-center gap-8 mb-12 text-sm text-stone-500 uppercase tracking-widest font-sans">
-        <button class="text-[#a83f39] border-b border-[#a83f39] pb-1 filter-btn" data-filter="all" data-i18n="gallery.filter.all">All Works</button>
-        <button class="hover:text-stone-800 transition-colors filter-btn" data-filter="flower" data-i18n="gallery.filter.flower">Flowers</button>
-        <button class="hover:text-stone-800 transition-colors filter-btn" data-filter="animal" data-i18n="gallery.filter.animal">Animals</button>
-        <button class="hover:text-stone-800 transition-colors filter-btn" data-filter="bird_flower" data-i18n="gallery.filter.bird_flower">Birds & Flowers</button>
-      </div>
-
-      <div id="gallery-grid" class="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8 min-h-[400px]">
-        <div class="col-span-full flex justify-center items-center h-40 w-full">
-          <div class="loader"></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section id="contact" class="bg-stone-900 text-stone-200 py-24 relative overflow-hidden">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
-        <div>
-          <h2 class="text-4xl font-serif text-white mb-6 italic" data-i18n="contact.title">Acquire & Connect</h2>
-          <p class="text-stone-400 mb-8 leading-relaxed font-serif-text text-lg" data-i18n="contact.desc">
-            Bring a piece of Eastern tranquility into your home. For inquiries, commissions, or gallery representation, please contact us.
-          </p>
-
-          <div class="space-y-6 font-sans">
-            <div class="flex items-center gap-4">
-              <div class="w-12 h-12 rounded-full bg-stone-800 flex items-center justify-center text-[#a83f39]">
-                <i data-lucide="mail"></i>
-              </div>
-              <div>
-                <h4 class="text-white text-xs uppercase tracking-widest">Email</h4>
-                <p class="text-stone-400 text-sm">contact@huaqing-art.com</p>
-              </div>
-            </div>
-            <div class="flex items-center gap-4">
-              <a href="https://instagram.com" target="_blank" class="w-12 h-12 rounded-full bg-stone-800 flex items-center justify-center text-white hover:bg-[#a83f39] transition-colors duration-300">
-                <i data-lucide="instagram"></i>
-              </a>
-              <div>
-                <h4 class="text-white text-xs uppercase tracking-widest">Instagram</h4>
-                <p class="text-stone-400 text-sm">@huaqing_gongbi</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-stone-800 p-8 rounded-lg shadow-2xl">
-          <form onsubmit="event.preventDefault(); alert('Thank you. We will contact you shortly.');" class="space-y-6 font-sans">
-            <div>
-              <label class="block text-xs text-stone-400 mb-2 uppercase tracking-widest" data-i18n="form.name">Your Name</label>
-              <input type="text" class="w-full bg-stone-700 border border-stone-600 text-white px-4 py-3 focus:outline-none focus:border-[#a83f39] transition-colors">
-            </div>
-            <div>
-              <label class="block text-xs text-stone-400 mb-2 uppercase tracking-widest" data-i18n="form.email">Email Address</label>
-              <input type="email" class="w-full bg-stone-700 border border-stone-600 text-white px-4 py-3 focus:outline-none focus:border-[#a83f39] transition-colors">
-            </div>
-            <div>
-              <label class="block text-xs text-stone-400 mb-2 uppercase tracking-widest" data-i18n="form.message">Inquiry / Message</label>
-              <textarea rows="4" class="w-full bg-stone-700 border border-stone-600 text-white px-4 py-3 focus:outline-none focus:border-[#a83f39] transition-colors"></textarea>
-            </div>
-            <button type="submit" class="w-full bg-[#a83f39] text-white py-4 uppercase tracking-widest hover:bg-red-800 transition-colors text-xs font-bold" data-i18n="form.submit">
-              Send Inquiry
-            </button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <footer class="bg-stone-950 text-stone-600 py-12 text-center text-sm border-t border-stone-900 relative">
-    <p class="mb-2 font-serif">&copy; 2024 Hua Qing Art. All rights reserved.</p>
-    <p class="font-serif italic text-xs mb-8" data-i18n="footer.tagline">Designed for the beauty of tranquility.</p>
-  </footer>
-
-  <!-- AUTH MODAL -->
-  <div id="authModal" class="fixed inset-0 z-[80] hidden bg-black/80 flex items-center justify-center p-4">
-    <div class="bg-white p-8 rounded-lg max-w-md w-full shadow-2xl relative">
-      <button id="closeAuth" class="absolute top-4 right-4 text-stone-500 hover:text-black">
-        <i data-lucide="x" class="w-6 h-6"></i>
-      </button>
-
-      <div class="flex justify-center gap-6 mb-6 font-serif border-b border-stone-200 pb-2">
-        <button id="tab-login" class="text-xl font-bold text-[#a83f39] border-b-2 border-[#a83f39] pb-1 transition-colors">Login</button>
-        <button id="tab-register" class="text-xl text-stone-400 hover:text-stone-600 pb-1 transition-colors">Register</button>
-      </div>
-
-      <!-- LOGIN -->
-      <div id="form-login" class="space-y-4">
-        <input type="email" id="login-email" class="w-full border border-stone-300 p-2 rounded font-serif" placeholder="Email">
-        <input type="password" id="login-pass" class="w-full border border-stone-300 p-2 rounded font-serif" placeholder="Password">
-        <input type="text" id="login-name" class="w-full border border-stone-300 p-2 rounded font-serif" placeholder="Nickname (optional)">
-
-        <button id="loginBtn" class="w-full bg-[#a83f39] text-white py-2 rounded font-serif hover:bg-red-800">Sign In</button>
-
-        <div class="text-xs text-stone-500 leading-relaxed">
-          <div id="verifyHint" class="hidden mt-2 p-3 bg-stone-50 border border-stone-200 rounded">
-            <p class="mb-2">Your email is not verified yet.</p>
-            <button id="resendVerifyBtn" class="text-[#a83f39] underline">Resend verification email</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- REGISTER -->
-      <div id="form-register" class="space-y-4 hidden">
-        <input type="email" id="reg-email" class="w-full border border-stone-300 p-2 rounded font-serif" placeholder="Email">
-        <input type="password" id="reg-pass" class="w-full border border-stone-300 p-2 rounded font-serif" placeholder="Password (>= 6 chars)">
-        <input type="text" id="reg-name" class="w-full border border-stone-300 p-2 rounded font-serif" placeholder="Nickname">
-
-        <button id="registerBtn" class="w-full bg-stone-800 text-white py-2 rounded font-serif hover:bg-stone-700">Create Account</button>
-
-        <p class="text-xs text-stone-500 leading-relaxed">
-          After registration, please verify your email via inbox, then login again.
-        </p>
-      </div>
+<!-- ================= NAV ================= -->
+<nav class="fixed top-0 w-full bg-white/90 backdrop-blur z-50 border-b">
+  <div class="max-w-7xl mx-auto flex justify-between items-center px-6 h-16">
+    <h1 class="font-bold tracking-widest">HUA QING</h1>
+    <div class="flex gap-4 items-center">
+      <button id="authBtn" class="text-sm">Sign In</button>
+      <button id="adminBtn" class="hidden text-sm text-red-700">Admin</button>
     </div>
   </div>
+</nav>
 
-  <!-- ADMIN MODAL -->
-  <div id="adminModal" class="fixed inset-0 z-[90] hidden bg-black/80 flex items-center justify-center p-4">
-    <div class="bg-white p-6 rounded-lg max-w-3xl w-full shadow-2xl relative max-h-[90vh] overflow-y-auto">
-      <button id="closeAdmin" class="absolute top-4 right-4 text-stone-500 hover:text-black">
-        <i data-lucide="x" class="w-6 h-6"></i>
-      </button>
+<div class="h-16"></div>
 
-      <h3 class="text-2xl font-bold text-stone-800 mb-4 text-center font-serif">Admin Dashboard</h3>
-      <p class="text-xs text-stone-500 text-center mb-6">
-        Admin actions require: logged-in + email verified + admin whitelist.
+<!-- ================= HERO ================= -->
+<section class="h-screen flex items-center justify-center bg-stone-100">
+  <h2 class="text-4xl italic">Timeless Serenity, Painted in Silk</h2>
+</section>
+
+<!-- ================= ABOUT / VIDEO ================= -->
+<section class="py-24 bg-white">
+  <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center px-6">
+    <div class="shadow-lg aspect-video">
+      <iframe
+        class="w-full h-full"
+        src="https://www.youtube.com/embed/zN0VzZRzlqM?autoplay=1&mute=1&loop=1&playlist=zN0VzZRzlqM&controls=0&modestbranding=1&playsinline=1"
+        allow="autoplay; encrypted-media; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>
+    <div>
+      <h3 class="text-3xl italic mb-6">The Craft</h3>
+      <p class="leading-loose">
+        Gongbi is a meditation of patience and precision.
+        Each stroke carries silence and time.
       </p>
-
-      <!-- Video config -->
-      <div class="border border-stone-200 rounded p-4 mb-6">
-        <div class="flex items-center justify-between mb-3">
-          <h4 class="font-serif font-bold text-[#a83f39]">About Video</h4>
-          <div class="text-xs text-stone-500">YouTube URL OR upload mp4</div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 items-center">
-          <input id="videoUrlInput" class="md:col-span-2 border border-stone-300 rounded p-2 text-sm" placeholder="YouTube URL or MP4 URL">
-          <button id="saveVideoUrlBtn" class="bg-stone-800 text-white rounded p-2 text-sm hover:bg-stone-700">Save URL</button>
-        </div>
-
-        <div class="mt-3 flex items-center gap-3">
-          <input type="file" id="videoFileInput" accept="video/mp4" class="text-sm"/>
-          <button id="uploadVideoBtn" class="bg-[#a83f39] text-white rounded px-3 py-2 text-sm hover:bg-red-800">Upload MP4</button>
-          <span id="videoUploadStatus" class="text-xs text-stone-500"></span>
-        </div>
-      </div>
-
-      <!-- Artist photo -->
-      <div class="border border-stone-200 rounded p-4 mb-6">
-        <div class="flex items-center justify-between mb-3">
-          <h4 class="font-serif font-bold text-[#a83f39]">Artist Photo</h4>
-          <div class="text-xs text-stone-500">Upload new avatar</div>
-        </div>
-        <div class="flex items-center gap-3">
-          <input type="file" id="artistAdminFileInput" accept="image/*" class="text-sm"/>
-          <button id="uploadArtistBtn" class="bg-[#a83f39] text-white rounded px-3 py-2 text-sm hover:bg-red-800">Upload</button>
-          <span id="artistUploadStatus" class="text-xs text-stone-500"></span>
-        </div>
-      </div>
-
-      <!-- Add artwork -->
-      <div class="border border-stone-200 rounded p-4 mb-6">
-        <h4 class="font-serif font-bold text-[#a83f39] mb-3">Add New Artwork</h4>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <input id="new-title-zh" class="border border-stone-300 rounded p-2 text-sm" placeholder="Chinese Title (required)">
-          <input id="new-title-en" class="border border-stone-300 rounded p-2 text-sm" placeholder="English Title">
-          <input id="new-desc-zh" class="border border-stone-300 rounded p-2 text-sm" placeholder="CN Desc: Size | Material">
-          <input id="new-desc-en" class="border border-stone-300 rounded p-2 text-sm" placeholder="EN Desc: Size | Material">
-          <select id="new-category" class="border border-stone-300 rounded p-2 text-sm">
-            <option value="flower">Flowers</option>
-            <option value="animal">Animals</option>
-            <option value="bird_flower">Birds & Flowers</option>
-          </select>
-          <select id="new-status" class="border border-stone-300 rounded p-2 text-sm">
-            <option value="Available">Available</option>
-            <option value="Reserved">Reserved</option>
-            <option value="Sold">Sold</option>
-          </select>
-        </div>
-
-        <div id="artDropZone" class="drop-zone mt-4 w-full h-32 flex flex-col items-center justify-center rounded cursor-pointer text-stone-500 text-xs p-2 relative">
-          <i data-lucide="images" class="w-8 h-8 mb-2 text-stone-400"></i>
-          <p>Drag & Drop Images Here (or Click to Select)</p>
-          <input type="file" id="artFilesInput" accept="image/*" multiple class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"/>
-        </div>
-
-        <div id="artPreview" class="mt-3 flex gap-2 overflow-x-auto h-24 border border-stone-200 p-2 rounded bg-stone-50"></div>
-
-        <div class="mt-3 flex items-center gap-3">
-          <button id="publishArtworkBtn" class="bg-[#a83f39] text-white rounded px-4 py-2 text-sm hover:bg-red-800">Publish</button>
-          <span id="publishStatus" class="text-xs text-stone-500"></span>
-        </div>
-      </div>
-
-      <!-- Manage artworks -->
-      <div class="border border-stone-200 rounded p-4 mb-2">
-        <div class="flex items-center justify-between mb-3">
-          <h4 class="font-serif font-bold text-[#a83f39]">Manage Artworks</h4>
-          <button id="refreshAdminListBtn" class="text-xs border border-stone-300 px-3 py-1 rounded hover:border-[#a83f39] hover:text-[#a83f39]">Refresh</button>
-        </div>
-        <div id="adminArtList" class="space-y-2 text-sm"></div>
-      </div>
     </div>
   </div>
+</section>
 
-  <!-- DETAILS MODAL -->
-  <div id="imgModal" class="fixed inset-0 z-[60] hidden bg-black/95 flex items-center justify-center p-4 overflow-y-auto">
-    <button id="closeImgModal" class="fixed top-6 right-6 text-white hover:text-[#a83f39] transition-colors z-[70]">
-      <i data-lucide="x" class="w-10 h-10"></i>
-    </button>
-
-    <div class="max-w-7xl w-full flex flex-col lg:flex-row gap-8 items-start justify-center mt-10 mb-10">
-      <div class="lg:w-2/3 w-full bg-stone-900/50 p-4 rounded min-h-[600px] max-h-[90vh] overflow-y-auto">
-        <div id="modalImagesContainer" class="flex flex-col gap-6"></div>
-      </div>
-
-      <div class="text-white lg:w-1/3 w-full bg-stone-900/80 p-6 rounded-lg backdrop-blur-md h-fit">
-        <div class="flex items-start justify-between gap-4">
-          <div>
-            <h3 id="modalTitle" class="text-4xl mb-2 text-[#a83f39] font-serif italic tracking-wide"></h3>
-            <p id="modalDesc" class="text-stone-300 text-lg font-serif italic mb-3"></p>
-          </div>
-          <div class="text-right">
-            <div id="modalStatus" class="inline-block px-3 py-1 bg-stone-800 text-xs tracking-widest font-serif mb-2"></div>
-            <div id="likesLine" class="text-xs text-stone-300"></div>
-          </div>
-        </div>
-
-        <!-- Like -->
-        <div class="mt-4 flex items-center gap-3">
-          <button id="likeBtn" class="bg-[#a83f39] hover:bg-red-800 text-white px-4 py-2 rounded text-sm font-serif flex items-center gap-2">
-            <span>❤</span>
-            <span id="likeBtnText">Like</span>
-          </button>
-          <span id="likeHint" class="text-xs text-stone-300"></span>
-        </div>
-
-        <!-- Admin panel (in modal) -->
-        <div id="img-admin-edit-panel" class="hidden mt-6 mb-6 p-4 bg-stone-800 rounded border border-[#a83f39]">
-          <h4 class="text-[#a83f39] font-bold mb-3 font-serif">Admin Controls</h4>
-          <select id="modal-status-select" class="w-full bg-stone-700 text-white p-2 rounded border border-stone-600 font-serif text-xs mb-2">
-            <option value="Available">Available</option>
-            <option value="Sold">Sold</option>
-            <option value="Reserved">Reserved</option>
-          </select>
-          <div class="flex gap-2">
-            <button id="updateStatusBtn" class="flex-1 bg-green-800 hover:bg-green-700 text-white py-1 px-2 rounded text-sm font-serif">Update Status</button>
-            <button id="deleteArtworkBtn" class="flex-1 bg-red-800 hover:bg-red-700 text-white py-1 px-2 rounded text-sm font-serif">Delete</button>
-          </div>
-          <p class="text-xs text-stone-400 mt-2">Delete will remove artwork doc + try deleting stored files.</p>
-        </div>
-
-        <!-- Comments -->
-        <div class="mt-8 border-t border-stone-700 pt-6">
-          <h4 class="text-lg font-bold mb-4 font-serif">Comments</h4>
-          <div id="comments-list" class="space-y-3 max-h-[300px] overflow-y-auto mb-4 pr-2"></div>
-
-          <div class="flex gap-2">
-            <input id="new-comment-input" type="text" placeholder="Share your thoughts..."
-                   class="flex-1 bg-stone-800 border border-stone-600 rounded px-3 py-2 text-sm text-white">
-            <button id="postCommentBtn" class="bg-[#a83f39] text-white px-4 py-2 rounded text-sm font-serif hover:bg-red-800">Post</button>
-          </div>
-          <div id="commentHint" class="text-xs text-stone-300 mt-2"></div>
-        </div>
-      </div>
-    </div>
+<!-- ================= GALLERY ================= -->
+<section class="py-24 bg-stone-100">
+  <div class="max-w-7xl mx-auto px-6">
+    <h3 class="text-4xl italic text-center mb-12">Gallery</h3>
+    <div id="gallery" class="columns-1 md:columns-3 gap-6"></div>
   </div>
+</section>
+
+<!-- ================= AUTH MODAL ================= -->
+<div id="authModal" class="fixed inset-0 bg-black/70 hidden flex items-center justify-center z-50">
+  <div class="bg-white p-6 rounded w-80 space-y-4">
+    <h4 class="text-xl font-bold text-center">Account</h4>
+
+    <input id="regEmail" placeholder="Email" class="border p-2 w-full">
+    <input id="regPassword" placeholder="Password" type="password" class="border p-2 w-full">
+    <input id="regName" placeholder="Nickname" class="border p-2 w-full">
+
+    <button id="registerBtn" class="w-full bg-stone-800 text-white py-2">Register</button>
+    <button id="loginBtn" class="w-full border py-2">Login</button>
+    <button onclick="closeAuth()" class="w-full text-xs text-stone-400">Close</button>
+  </div>
+</div>
+
+<!-- ================= ADMIN UPLOAD ================= -->
+<button id="addArtworkBtn"
+  class="hidden fixed bottom-6 right-6 bg-red-700 text-white w-14 h-14 rounded-full text-3xl">+</button>
+
+<input type="file" id="fileInput" multiple hidden>
+
+<!-- ================= FIREBASE ================= -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, updateProfile, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBDvZ7oykdugl6DQH_p-0KOgy0sfMuMmFc",
+  authDomain: "qinghua-852c1.firebaseapp.com",
+  projectId: "qinghua-852c1",
+  storageBucket: "qinghua-852c1.appspot.com",
+  appId: "1:391709518256:web:a18730b2d099c362e9ce75"
+};
+
+const ADMIN_EMAILS = ["elin641@163.com"];
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
+
+/* ===== AUTH ===== */
+const authModal = document.getElementById("authModal");
+authBtn.onclick = () => authModal.classList.remove("hidden");
+function closeAuth(){ authModal.classList.add("hidden"); }
+
+registerBtn.onclick = async () => {
+  const email = regEmail.value;
+  const pass = regPassword.value;
+  const name = regName.value;
+  const cred = await createUserWithEmailAndPassword(auth, email, pass);
+  await updateProfile(cred.user, { displayName: name });
+  await sendEmailVerification(cred.user);
+  alert("Check your email to verify.");
+};
+
+loginBtn.onclick = async () => {
+  await signInWithEmailAndPassword(auth, regEmail.value, regPassword.value);
+};
+
+onAuthStateChanged(auth, user => {
+  authModal.classList.add("hidden");
+  authBtn.textContent = user ? user.displayName : "Sign In";
+
+  if (user && ADMIN_EMAILS.includes(user.email)) {
+    adminBtn.classList.remove("hidden");
+    addArtworkBtn.classList.remove("hidden");
+  }
+});
+
+/* ===== GALLERY ===== */
+const gallery = document.getElementById("gallery");
+onSnapshot(collection(db, "artworks"), snap => {
+  gallery.innerHTML = "";
+  snap.forEach(d => {
+    const img = document.createElement("img");
+    img.src = d.data().img;
+    img.className = "mb-6 rounded shadow";
+    gallery.appendChild(img);
+  });
+});
+
+/* ===== ADMIN UPLOAD ===== */
+addArtworkBtn.onclick = () => fileInput.click();
+fileInput.onchange = async () => {
+  for (let file of fileInput.files) {
+    const r = ref(storage, "artworks/" + Date.now() + file.name);
+    await uploadBytes(r, file);
+    const url = await getDownloadURL(r);
+    await addDoc(collection(db, "artworks"), {
+      img: url,
+      createdAt: serverTimestamp()
+    });
+  }
+};
+</script>
 
-  <!-- FIREBASE + APP -->
-  <script type="module">
-    /***********************
-     * 0) CONFIG YOU MAY EDIT
-     ************************/
-    const ADMIN_EMAILS = ["elin641@163.com"]; // 需要加多个管理员，就在这里加
-    const SITE_ID = "huaqing-site-v1";        // 任意字符串（用于分隔你的数据），不用改也行
-
-    /***********************
-     * 1) FIREBASE IMPORTS
-     ************************/
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import {
-      getAuth,
-      onAuthStateChanged,
-      createUserWithEmailAndPassword,
-      signInWithEmailAndPassword,
-      sendEmailVerification,
-      signOut,
-      reload
-    } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-
-    import {
-      getFirestore,
-      collection,
-      doc,
-      getDoc,
-      setDoc,
-      addDoc,
-      updateDoc,
-      deleteDoc,
-      serverTimestamp,
-      onSnapshot,
-      query,
-      orderBy,
-      getDocs,
-      increment
-    } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-    import {
-      getStorage,
-      ref as sRef,
-      uploadBytes,
-      getDownloadURL,
-      deleteObject
-    } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
-
-    /***********************
-     * 2) YOUR FIREBASE CONFIG (from you)
-     ************************/
-    const firebaseConfig = {
-      apiKey: "AIzaSyBDvZ7oykdugl6DQH_p-0KOgy0sfMuMmFc",
-      authDomain: "qinghua-852c1.firebaseapp.com",
-      projectId: "qinghua-852c1",
-      storageBucket: "qinghua-852c1.firebasestorage.app",
-      messagingSenderId: "391709518256",
-      appId: "1:391709518256:web:a18730b2d099c362e9ce75",
-      measurementId: "G-8T36VSX6B6"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    const storage = getStorage(app);
-
-    /***********************
-     * 3) PATHS
-     ************************/
-    const ARTWORKS = collection(db, "sites", SITE_ID, "artworks");
-    const SITE_CFG = doc(db, "sites", SITE_ID, "config", "site");
-    const ARTIST   = doc(db, "sites", SITE_ID, "config", "artist");
-
-    /***********************
-     * 4) STATE
-     ************************/
-    let currentLang = localStorage.getItem("huaqing_lang") || "en";
-    let currentArtwork = null;      // {id,...}
-    let isAdmin = false;
-    let userNick = localStorage.getItem("huaqing_nick") || "";
-
-    // Admin upload queue
-    let pendingArtFiles = [];       // File[]
-    let currentFilter = "all";
-
-    /***********************
-     * 5) I18N
-     ************************/
-    const i18n = {
-      zh: {
-        "nav.home":"首页","nav.source":"工笔之源","nav.artist":"关于画家","nav.gallery":"作品赏析","nav.contact":"收藏/联系","seal":"花青",
-        "hero.subtitle":"工笔画艺术","hero.title":"尽精微 致广大","hero.desc":"“于静谧中见乾坤，于细微处见广大。”","hero.button":"进入画廊",
-        "gongbi.label":"关于工笔","gongbi.title":"巧密而精细",
-        "gongbi.p1":"工笔画，源于传统，讲究以线立形、取神得形，在绢本与熟宣之上描摹万物之生机。",
-        "gongbi.p2":"它的流程缓慢而严谨：先勾线，再分染与罩染，多次叠加矿物颜料，呈现温润静气。",
-        "gongbi.p3":"一朵花瓣，可能需要多层渲染才得其微光。这就是“慢”的艺术。",
-        "gongbi.list1":"<strong>勾勒：</strong> 铁线描与游丝描的骨法用笔",
-        "gongbi.list2":"<strong>渲染：</strong> 石青、石绿、朱砂等矿物颜料的层层叠加",
-        "artist.name":"花青","artist.title":"当代青年工笔画家",
-        "artist.bio1":"花青生于江南水乡，自幼习画，专注于工笔花鸟的传统技法与当代表达。",
-        "artist.bio2":"她以“慢”为抵抗：在细微处安放心神，让观者在静谧中看见万物的呼吸。",
-        "artist.stat1":"年艺术生涯","artist.stat2":"次画展经历","artist.stat3":"私人收藏",
-        "gallery.label":"精选作品","gallery.title":"墨韵流芳",
-        "gallery.filter.all":"全部","gallery.filter.flower":"花","gallery.filter.animal":"动物","gallery.filter.bird_flower":"花鸟",
-        "contact.title":"收藏与联络","contact.desc":"如果您对作品感兴趣或有定制需求，请通过以下方式联系我。期待与您分享工笔画的静谧之美。",
-        "form.name":"姓名","form.email":"邮箱","form.message":"留言","form.submit":"发送留言",
-        "footer.tagline":"于静谧中见乾坤"
-      },
-      en: {
-        "nav.home":"Home","nav.source":"The Craft","nav.artist":"Artist","nav.gallery":"Gallery","nav.contact":"Collect","seal":"Hua",
-        "hero.subtitle":"The Ancient Art of Gongbi","hero.title":"Timeless Serenity, Painted in Silk","hero.desc":"“Where the microscopic world meets infinite mindfulness.”","hero.button":"Explore Collection",
-        "gongbi.label":"The Process","gongbi.title":"A Thousand Strokes of Silence",
-        "gongbi.p1":"Gongbi is a form of meditation: meticulous lines on silk and paper that preserve the essence of life.",
-        "gongbi.p2":"The process is slow and rigorous—outline, layer, glaze—mineral pigments accumulating into quiet radiance.",
-        "gongbi.p3":"A single petal may require many translucent washes. This is the art of slow living.",
-        "gongbi.list1":"<strong>The Outline:</strong> Iron-wire lines that define the spirit.",
-        "gongbi.list2":"<strong>The Wash:</strong> Endless layers of mineral pigments.",
-        "artist.name":"Hua Qing","artist.title":"Contemporary Master of Gongbi",
-        "artist.bio1":"Hua Qing focuses on the classical craft of Gongbi with a contemporary sense of composition and color.",
-        "artist.bio2":"Her works invite you to pause—breath by breath—until the universe fits inside a single petal.",
-        "artist.stat1":"Years Devotion","artist.stat2":"Global Exhibitions","artist.stat3":"Private Collections",
-        "gallery.label":"Curated Collection","gallery.title":"Ink & Rhythm",
-        "gallery.filter.all":"All Works","gallery.filter.flower":"Flowers","gallery.filter.animal":"Animals","gallery.filter.bird_flower":"Birds & Flowers",
-        "contact.title":"Acquire & Connect","contact.desc":"For acquisition inquiries, commissions, or gallery representation, please contact us.",
-        "form.name":"Your Name","form.email":"Email Address","form.message":"Inquiry / Message","form.submit":"Send Inquiry",
-        "footer.tagline":"Designed for the beauty of tranquility."
-      }
-    };
-
-    /***********************
-     * 6) HELPERS
-     ************************/
-    const $ = (id) => document.getElementById(id);
-
-    function applyLanguage(){
-      $("lang-btn-text").innerText = currentLang === "zh" ? "EN" : "中";
-      $("lang-btn-text-mobile").innerText = currentLang === "zh" ? "EN" : "中";
-      document.querySelectorAll("[data-i18n]").forEach(el=>{
-        const key = el.getAttribute("data-i18n");
-        if(i18n[currentLang]?.[key]) el.innerHTML = i18n[currentLang][key];
-      });
-      if(currentArtwork) renderModal(currentArtwork);
-      renderGalleryCached(); // re-render titles
-    }
-
-    function userDisplayName(user){
-      if(!user) return (currentLang === "zh" ? "登录/注册" : "Sign In");
-      const email = user.email || "";
-      const nick = userNick || "";
-      return nick ? nick : email;
-    }
-
-    function computeIsAdmin(user){
-      if(!user) return false;
-      if(!user.email) return false;
-      return ADMIN_EMAILS.includes(user.email) && user.emailVerified === true;
-    }
-
-    function mustBeVerified(){
-      const u = auth.currentUser;
-      if(!u) return { ok:false, msg:(currentLang==="zh"?"请先登录":"Please sign in first.") };
-      if(!u.emailVerified) return { ok:false, msg:(currentLang==="zh"?"请先去邮箱验证账号":"Please verify your email first.") };
-      return { ok:true };
-    }
-
-    function statusBadgeClass(status){
-      if(status==="Sold") return "bg-stone-700 text-stone-300";
-      if(status==="Reserved") return "bg-stone-500 text-white";
-      return "bg-[#a83f39] text-white";
-    }
-
-    function youtubeId(url){
-      try{
-        if(url.includes("youtu.be/")) return url.split("youtu.be/")[1].split("?")[0];
-        const u = new URL(url);
-        if(u.searchParams.get("v")) return u.searchParams.get("v");
-        if(u.pathname.includes("/embed/")) return u.pathname.split("/embed/")[1].split("?")[0];
-      }catch{}
-      return null;
-    }
-
-    /***********************
-     * 7) UI WIRING
-     ************************/
-    function openAuthModal(tab="login"){
-      $("authModal").classList.remove("hidden");
-      switchAuthTab(tab);
-    }
-    function closeAuthModal(){ $("authModal").classList.add("hidden"); }
-
-    function switchAuthTab(tab){
-      const login = $("form-login");
-      const reg = $("form-register");
-      const tLogin = $("tab-login");
-      const tReg = $("tab-register");
-      if(tab==="login"){
-        login.classList.remove("hidden"); reg.classList.add("hidden");
-        tLogin.classList.add("text-[#a83f39]","border-b-2","border-[#a83f39]"); tLogin.classList.remove("text-stone-400");
-        tReg.classList.remove("text-[#a83f39]","border-b-2","border-[#a83f39]"); tReg.classList.add("text-stone-400");
-      }else{
-        login.classList.add("hidden"); reg.classList.remove("hidden");
-        tReg.classList.add("text-[#a83f39]","border-b-2","border-[#a83f39]"); tReg.classList.remove("text-stone-400");
-        tLogin.classList.remove("text-[#a83f39]","border-b-2","border-[#a83f39]"); tLogin.classList.add("text-stone-400");
-      }
-    }
-
-    function openAdmin(){
-      $("adminModal").classList.remove("hidden");
-      refreshAdminList();
-    }
-    function closeAdmin(){ $("adminModal").classList.add("hidden"); }
-
-    function openImageModal(){ $("imgModal").classList.remove("hidden"); document.body.style.overflow="hidden"; }
-    function closeImageModal(){ $("imgModal").classList.add("hidden"); document.body.style.overflow="auto"; currentArtwork=null; }
-
-    /***********************
-     * 8) DATA: SITE CONFIG
-     ************************/
-    async function loadSiteConfig(){
-      const cfgSnap = await getDoc(SITE_CFG);
-      if(cfgSnap.exists()){
-        const d = cfgSnap.data();
-        if(d.aboutVideoUrl) setAboutVideo(d.aboutVideoUrl);
-      }
-      const artistSnap = await getDoc(ARTIST);
-      if(artistSnap.exists()){
-        const d = artistSnap.data();
-        if(d.photoUrl) $("artist-img").src = d.photoUrl;
-      }
-    }
-
-    function setAboutVideo(url){
-      const box = $("painting-process-video");
-      const yid = youtubeId(url);
-      if(yid){
-        box.innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${yid}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-      }else{
-        box.innerHTML = `<video src="${url}" controls loop muted autoplay playsinline class="w-full h-full object-cover"></video>`;
-      }
-    }
-
-    /***********************
-     * 9) DATA: ARTWORKS LIVE LIST
-     ************************/
-    let artworksCache = []; // all artworks
-    function subscribeArtworks(){
-      const q = query(ARTWORKS, orderBy("createdAt","desc"));
-      onSnapshot(q, (snap)=>{
-        artworksCache = [];
-        snap.forEach(d=>{
-          artworksCache.push({ id:d.id, ...d.data() });
-        });
-        renderGalleryCached();
-        if(isAdmin) refreshAdminList(true);
-      });
-    }
-
-    function renderGalleryCached(){
-      const grid = $("gallery-grid");
-      grid.innerHTML = "";
-      const list = (currentFilter==="all") ? artworksCache : artworksCache.filter(a=>a.category===currentFilter);
-
-      if(list.length===0){
-        grid.innerHTML = `<div class="col-span-full flex justify-center items-center h-40 w-full text-stone-500">No artworks yet.</div>`;
-        return;
-      }
-
-      list.forEach(art=>{
-        const title = currentLang==="zh" ? (art.title_zh||"") : (art.title_en||art.title_zh||"");
-        const desc  = currentLang==="zh" ? (art.desc_zh||"") : (art.desc_en||art.desc_zh||"");
-        const status = art.status || "Available";
-        const badge = statusBadgeClass(status);
-
-        const mainImg = (art.images?.[0]?.url) || "";
-        const card = document.createElement("div");
-        card.className = "group cursor-pointer break-inside-avoid mb-8 relative";
-        card.innerHTML = `
-          <div class="bg-white shadow-md rounded overflow-hidden relative">
-            <img src="${mainImg}" alt="${title}" class="w-full h-auto object-cover">
-            <div class="absolute inset-0 bg-black/0 hover:bg-black/20 transition-colors z-20 flex items-center justify-center">
-              <span class="text-white border border-white px-6 py-2 tracking-widest text-sm font-song-art opacity-0 group-hover:opacity-100 transition-opacity">VIEW</span>
-            </div>
-          </div>
-          <div class="mt-4 text-center">
-            <h3 class="text-xl font-bold text-stone-800 font-serif">${title}</h3>
-            <p class="text-stone-500 text-sm mt-1 font-serif italic">${desc}</p>
-            <div class="mt-2 flex items-center justify-center gap-2">
-              <span class="inline-block px-2 py-0.5 text-xs ${badge} font-sans uppercase tracking-widest">${status}</span>
-              <span class="text-xs text-stone-400">❤ ${art.likesCount || 0}</span>
-            </div>
-          </div>
-        `;
-        card.addEventListener("click", ()=> openArtwork(art.id));
-        grid.appendChild(card);
-      });
-      lucide.createIcons();
-    }
-
-    async function openArtwork(artId){
-      const art = artworksCache.find(a=>a.id===artId);
-      if(!art) return;
-      currentArtwork = art;
-      renderModal(art);
-      openImageModal();
-      subscribeComments(art.id);
-      await refreshLikeState(art.id);
-    }
-
-    /***********************
-     * 10) MODAL RENDER + ADMIN ACTIONS
-     ************************/
-    function renderModal(art){
-      const title = currentLang==="zh" ? (art.title_zh||"") : (art.title_en||art.title_zh||"");
-      const desc  = currentLang==="zh" ? (art.desc_zh||"") : (art.desc_en||art.desc_zh||"");
-      $("modalTitle").innerText = title;
-      $("modalDesc").innerText = desc;
-      $("modalStatus").innerText = art.status || "Available";
-      $("likesLine").innerText = `❤ ${(art.likesCount||0)} likes`;
-
-      const c = $("modalImagesContainer");
-      c.innerHTML = "";
-      (art.images || []).forEach(obj=>{
-        const img = document.createElement("img");
-        img.src = obj.url;
-        img.className = "w-full h-auto object-contain shadow-2xl border-4 border-stone-800";
-        c.appendChild(img);
-      });
-
-      if(isAdmin){
-        $("img-admin-edit-panel").classList.remove("hidden");
-        $("modal-status-select").value = art.status || "Available";
-      }else{
-        $("img-admin-edit-panel").classList.add("hidden");
-      }
-
-      updateCommentHint();
-      updateLikeHint();
-    }
-
-    async function updateArtworkStatus(){
-      if(!currentArtwork) return;
-      if(!isAdmin) return alert("Admin only.");
-      const status = $("modal-status-select").value;
-      await updateDoc(doc(ARTWORKS, currentArtwork.id), { status });
-      $("modalStatus").innerText = status;
-    }
-
-    async function deleteCurrentArtwork(){
-      if(!currentArtwork) return;
-      if(!isAdmin) return alert("Admin only.");
-      if(!confirm("Permanently delete this artwork?")) return;
-
-      // Try delete storage files
-      const imgs = currentArtwork.images || [];
-      for(const im of imgs){
-        if(im.path){
-          try{
-            await deleteObject(sRef(storage, im.path));
-          }catch(e){
-            console.warn("Delete file failed:", e);
-          }
-        }
-      }
-      // delete likes & comments subcollections best handled via Cloud Functions (optional)
-      await deleteDoc(doc(ARTWORKS, currentArtwork.id));
-      closeImageModal();
-    }
-
-    /***********************
-     * 11) COMMENTS (subcollection)
-     ************************/
-    let commentsUnsub = null;
-
-    function updateCommentHint(){
-      const u = auth.currentUser;
-      if(!u){
-        $("commentHint").innerText = (currentLang==="zh" ? "登录后才能评论。" : "Sign in to comment.");
-        return;
-      }
-      if(!u.emailVerified){
-        $("commentHint").innerText = (currentLang==="zh" ? "请先去邮箱验证账号后再评论。" : "Verify email first to comment.");
-        return;
-      }
-      $("commentHint").innerText = "";
-    }
-
-    function subscribeComments(artId){
-      if(commentsUnsub) commentsUnsub();
-      const commentsCol = collection(db, "sites", SITE_ID, "artworks", artId, "comments");
-      const q = query(commentsCol, orderBy("createdAt","desc"));
-      commentsUnsub = onSnapshot(q, (snap)=>{
-        const list = $("comments-list");
-        list.innerHTML = "";
-        if(snap.empty){
-          list.innerHTML = `<div class="text-xs text-stone-400">No comments yet.</div>`;
-          return;
-        }
-        snap.forEach(d=>{
-          const c = d.data();
-          const div = document.createElement("div");
-          div.className = "bg-stone-800 p-2 rounded text-sm";
-          const name = c.userName || (c.email || "User");
-          div.innerHTML = `<span class="text-[#a83f39]">${escapeHtml(name)}:</span> ${escapeHtml(c.text || "")}`;
-          list.appendChild(div);
-        });
-      });
-    }
-
-    async function postComment(){
-      if(!currentArtwork) return;
-      const chk = mustBeVerified();
-      if(!chk.ok) return alert(chk.msg);
-
-      const txt = $("new-comment-input").value.trim();
-      if(!txt) return;
-
-      const u = auth.currentUser;
-      const commentsCol = collection(db, "sites", SITE_ID, "artworks", currentArtwork.id, "comments");
-      await addDoc(commentsCol, {
-        text: txt,
-        uid: u.uid,
-        email: u.email,
-        userName: userNick || u.email,
-        createdAt: serverTimestamp()
-      });
-      $("new-comment-input").value = "";
-    }
-
-    function escapeHtml(s){
-      return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
-    }
-
-    /***********************
-     * 12) LIKES (subcollection)
-     ************************/
-    async function refreshLikeState(artId){
-      const u = auth.currentUser;
-      const likeBtnText = $("likeBtnText");
-      const likeHint = $("likeHint");
-      if(!u){
-        likeBtnText.innerText = (currentLang==="zh"?"点赞":"Like");
-        likeHint.innerText = (currentLang==="zh"?"登录后才能点赞。":"Sign in to like.");
-        return;
-      }
-      if(!u.emailVerified){
-        likeBtnText.innerText = (currentLang==="zh"?"点赞":"Like");
-        likeHint.innerText = (currentLang==="zh"?"先验证邮箱再点赞。":"Verify email first to like.");
-        return;
-      }
-
-      const likeDoc = doc(db, "sites", SITE_ID, "artworks", artId, "likes", u.uid);
-      const snap = await getDoc(likeDoc);
-      if(snap.exists()){
-        likeBtnText.innerText = (currentLang==="zh"?"已赞":"Liked");
-        likeHint.innerText = (currentLang==="zh"?"再点一次取消点赞":"Click again to unlike");
-      }else{
-        likeBtnText.innerText = (currentLang==="zh"?"点赞":"Like");
-        likeHint.innerText = "";
-      }
-    }
-
-    function updateLikeHint(){
-      // called on render
-      if(!currentArtwork) return;
-      refreshLikeState(currentArtwork.id);
-    }
-
-    async function toggleLike(){
-      if(!currentArtwork) return;
-      const chk = mustBeVerified();
-      if(!chk.ok) return alert(chk.msg);
-
-      const u = auth.currentUser;
-      const likeDoc = doc(db, "sites", SITE_ID, "artworks", currentArtwork.id, "likes", u.uid);
-      const artDoc  = doc(ARTWORKS, currentArtwork.id);
-
-      const snap = await getDoc(likeDoc);
-      if(snap.exists()){
-        await deleteDoc(likeDoc);
-        await updateDoc(artDoc, { likesCount: increment(-1) });
-      }else{
-        await setDoc(likeDoc, { uid:u.uid, createdAt: serverTimestamp() });
-        await updateDoc(artDoc, { likesCount: increment(1) });
-      }
-      await refreshLikeState(currentArtwork.id);
-    }
-
-    /***********************
-     * 13) AUTH FLOWS
-     ************************/
-    async function doRegister(){
-      const email = $("reg-email").value.trim();
-      const pass  = $("reg-pass").value;
-      const name  = $("reg-name").value.trim();
-
-      if(!email || !pass || pass.length<6) return alert("Invalid email/password.");
-      if(!name) return alert("Please set a nickname.");
-
-      const cred = await createUserWithEmailAndPassword(auth, email, pass);
-      userNick = name;
-      localStorage.setItem("huaqing_nick", userNick);
-
-      await sendEmailVerification(cred.user);
-      alert("✅ Registered! Please verify your email in inbox, then login again.");
-      switchAuthTab("login");
-    }
-
-    async function doLogin(){
-      const email = $("login-email").value.trim();
-      const pass  = $("login-pass").value;
-      const name  = $("login-name").value.trim();
-      if(!email || !pass) return alert("Invalid email/password.");
-
-      const cred = await signInWithEmailAndPassword(auth, email, pass);
-      if(name){
-        userNick = name;
-        localStorage.setItem("huaqing_nick", userNick);
-      }
-
-      // show verification hint if needed
-      if(!cred.user.emailVerified){
-        $("verifyHint").classList.remove("hidden");
-      }else{
-        $("verifyHint").classList.add("hidden");
-      }
-
-      closeAuthModal();
-    }
-
-    async function resendVerification(){
-      const u = auth.currentUser;
-      if(!u) return alert("Please login first.");
-      await sendEmailVerification(u);
-      alert("Verification email sent.");
-    }
-
-    async function doLogout(){
-      await signOut(auth);
-      closeAuthModal();
-    }
-
-    function refreshAuthUI(){
-      const u = auth.currentUser;
-      $("user-name-display").innerText = userDisplayName(u);
-      if(u){
-        $("logoutBtn").classList.remove("hidden");
-      }else{
-        $("logoutBtn").classList.add("hidden");
-      }
-
-      isAdmin = computeIsAdmin(u);
-      $("adminBtn").classList.toggle("hidden", !isAdmin);
-      $("video-edit-btn").classList.toggle("hidden", !isAdmin);
-      $("artist-upload-hint").classList.toggle("hidden", !isAdmin);
-    }
-
-    /***********************
-     * 14) ADMIN: Upload artist photo & video & artwork
-     ************************/
-    async function adminGuard(){
-      if(!isAdmin) throw new Error("Admin only. Make sure admin email is verified.");
-    }
-
-    async function uploadArtistPhoto(file){
-      await adminGuard();
-      $("artistUploadStatus").innerText = "Uploading...";
-      const path = `sites/${SITE_ID}/artist/avatar_${Date.now()}.jpg`;
-      const r = sRef(storage, path);
-      await uploadBytes(r, file);
-      const url = await getDownloadURL(r);
-      await setDoc(ARTIST, { photoUrl:url, updatedAt: serverTimestamp() }, { merge:true });
-      $("artist-img").src = url;
-      $("artistUploadStatus").innerText = "✅ Updated";
-      setTimeout(()=> $("artistUploadStatus").innerText="", 1500);
-    }
-
-    async function saveVideoUrl(url){
-      await adminGuard();
-      await setDoc(SITE_CFG, { aboutVideoUrl:url, updatedAt: serverTimestamp() }, { merge:true });
-      setAboutVideo(url);
-      $("videoUploadStatus").innerText = "✅ Saved URL";
-      setTimeout(()=> $("videoUploadStatus").innerText="", 1500);
-    }
-
-    async function uploadVideoFile(file){
-      await adminGuard();
-      $("videoUploadStatus").innerText = "Uploading MP4...";
-      const path = `sites/${SITE_ID}/video/about_${Date.now()}.mp4`;
-      const r = sRef(storage, path);
-      await uploadBytes(r, file);
-      const url = await getDownloadURL(r);
-      await setDoc(SITE_CFG, { aboutVideoUrl:url, updatedAt: serverTimestamp() }, { merge:true });
-      setAboutVideo(url);
-      $("videoUploadStatus").innerText = "✅ Uploaded";
-      setTimeout(()=> $("videoUploadStatus").innerText="", 1500);
-    }
-
-    function renderAdminPreviews(){
-      const box = $("artPreview");
-      box.innerHTML = "";
-      pendingArtFiles.forEach(f=>{
-        const img = document.createElement("img");
-        img.className = "h-full w-auto rounded border border-stone-200";
-        img.src = URL.createObjectURL(f);
-        box.appendChild(img);
-      });
-    }
-
-    async function publishArtwork(){
-      await adminGuard();
-      const zh = $("new-title-zh").value.trim();
-      if(!zh) return alert("Chinese title is required.");
-      if(pendingArtFiles.length===0) return alert("Please add images.");
-
-      $("publishStatus").innerText = "Creating...";
-      const artRef = await addDoc(ARTWORKS, {
-        title_zh: zh,
-        title_en: $("new-title-en").value.trim() || zh,
-        desc_zh: $("new-desc-zh").value.trim(),
-        desc_en: $("new-desc-en").value.trim(),
-        category: $("new-category").value,
-        status: $("new-status").value,
-        images: [],
-        likesCount: 0,
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp()
-      });
-
-      $("publishStatus").innerText = "Uploading images...";
-      const uploaded = [];
-      for(const f of pendingArtFiles){
-        const safeName = f.name.replaceAll(" ","_").replaceAll("/","_");
-        const path = `sites/${SITE_ID}/artworks/${artRef.id}/${Date.now()}_${safeName}`;
-        const r = sRef(storage, path);
-        await uploadBytes(r, f);
-        const url = await getDownloadURL(r);
-        uploaded.push({ url, path });
-      }
-      await updateDoc(doc(ARTWORKS, artRef.id), { images: uploaded, updatedAt: serverTimestamp() });
-
-      // reset form
-      pendingArtFiles = [];
-      renderAdminPreviews();
-      $("publishStatus").innerText = "✅ Published";
-      setTimeout(()=> $("publishStatus").innerText="", 1500);
-    }
-
-    async function refreshAdminList(silent=false){
-      if(!isAdmin) return;
-      const box = $("adminArtList");
-      if(!silent) box.innerHTML = `<div class="text-xs text-stone-500">Loading...</div>`;
-
-      const snap = await getDocs(query(ARTWORKS, orderBy("createdAt","desc")));
-      box.innerHTML = "";
-      if(snap.empty){
-        box.innerHTML = `<div class="text-xs text-stone-500">No artworks.</div>`;
-        return;
-      }
-      snap.forEach(d=>{
-        const a = d.data();
-        const title = a.title_en || a.title_zh || d.id;
-        const status = a.status || "Available";
-        const row = document.createElement("div");
-        row.className = "flex items-center justify-between border border-stone-200 rounded p-2";
-        row.innerHTML = `
-          <div class="min-w-0">
-            <div class="font-serif font-bold truncate">${escapeHtml(title)}</div>
-            <div class="text-xs text-stone-500">Status: ${escapeHtml(status)} · ❤ ${(a.likesCount||0)}</div>
-          </div>
-          <div class="flex items-center gap-2">
-            <button class="text-xs border border-stone-300 px-2 py-1 rounded hover:border-[#a83f39] hover:text-[#a83f39]" data-open="${d.id}">Open</button>
-            <button class="text-xs border border-red-300 text-red-700 px-2 py-1 rounded hover:bg-red-50" data-del="${d.id}">Delete</button>
-          </div>
-        `;
-        row.querySelector("[data-open]").addEventListener("click", ()=> openArtwork(d.id));
-        row.querySelector("[data-del]").addEventListener("click", async ()=>{
-          if(!confirm("Delete this artwork?")) return;
-          const art = artworksCache.find(x=>x.id===d.id);
-          // try delete files
-          if(art?.images){
-            for(const im of art.images){
-              if(im.path){
-                try{ await deleteObject(sRef(storage, im.path)); }catch(e){ console.warn(e); }
-              }
-            }
-          }
-          await deleteDoc(doc(ARTWORKS, d.id));
-        });
-        box.appendChild(row);
-      });
-    }
-
-    /***********************
-     * 15) EVENTS
-     ************************/
-    function wireEvents(){
-      // icons
-      lucide.createIcons();
-
-      // mobile menu
-      $("mobile-menu-btn").addEventListener("click", ()=>{
-        $("mobile-menu").classList.toggle("hidden");
-      });
-
-      // language
-      $("langBtn").addEventListener("click", ()=>{
-        currentLang = (currentLang==="zh") ? "en" : "zh";
-        localStorage.setItem("huaqing_lang", currentLang);
-        applyLanguage();
-      });
-      $("langBtnMobile").addEventListener("click", ()=>{
-        currentLang = (currentLang==="zh") ? "en" : "zh";
-        localStorage.setItem("huaqing_lang", currentLang);
-        applyLanguage();
-      });
-
-      // auth modal
-      $("authBtn").addEventListener("click", ()=> openAuthModal("login"));
-      $("mobileAuthBtn").addEventListener("click", ()=> openAuthModal("login"));
-      $("closeAuth").addEventListener("click", closeAuthModal);
-      $("tab-login").addEventListener("click", ()=> switchAuthTab("login"));
-      $("tab-register").addEventListener("click", ()=> switchAuthTab("register"));
-      $("loginBtn").addEventListener("click", doLogin);
-      $("registerBtn").addEventListener("click", doRegister);
-      $("logoutBtn").addEventListener("click", doLogout);
-      $("resendVerifyBtn").addEventListener("click", resendVerification);
-
-      // admin
-      $("adminBtn").addEventListener("click", openAdmin);
-      $("closeAdmin").addEventListener("click", closeAdmin);
-      $("refreshAdminListBtn").addEventListener("click", ()=> refreshAdminList());
-
-      // video admin actions
-      $("changeVideoBtn").addEventListener("click", ()=>{
-        $("adminModal").classList.remove("hidden");
-        $("videoUrlInput").focus();
-      });
-      $("saveVideoUrlBtn").addEventListener("click", async ()=>{
-        const url = $("videoUrlInput").value.trim();
-        if(!url) return alert("Enter a URL.");
-        try{ await saveVideoUrl(url); }catch(e){ alert(e.message); }
-      });
-      $("uploadVideoBtn").addEventListener("click", async ()=>{
-        const f = $("videoFileInput").files?.[0];
-        if(!f) return alert("Pick an mp4 file.");
-        try{ await uploadVideoFile(f); }catch(e){ alert(e.message); }
-      });
-
-      // artist upload (click avatar)
-      $("artist-img-container").addEventListener("click", ()=>{
-        if(!isAdmin) return;
-        $("artistFileInput").click();
-      });
-      $("artistFileInput").addEventListener("change", async (e)=>{
-        const f = e.target.files?.[0];
-        if(!f) return;
-        try{ await uploadArtistPhoto(f); }catch(err){ alert(err.message); }
-      });
-      $("uploadArtistBtn").addEventListener("click", async ()=>{
-        const f = $("artistAdminFileInput").files?.[0];
-        if(!f) return alert("Choose an image file.");
-        try{ await uploadArtistPhoto(f); }catch(err){ alert(err.message); }
-      });
-
-      // filters
-      document.querySelectorAll(".filter-btn").forEach(btn=>{
-        btn.addEventListener("click", ()=>{
-          document.querySelectorAll(".filter-btn").forEach(b=> b.classList.remove("text-[#a83f39]","border-b","border-[#a83f39]"));
-          btn.classList.add("text-[#a83f39]","border-b","border-[#a83f39]");
-          currentFilter = btn.getAttribute("data-filter");
-          renderGalleryCached();
-        });
-      });
-
-      // modal close
-      $("closeImgModal").addEventListener("click", closeImageModal);
-
-      // modal actions
-      $("postCommentBtn").addEventListener("click", postComment);
-      $("likeBtn").addEventListener("click", toggleLike);
-      $("updateStatusBtn").addEventListener("click", updateArtworkStatus);
-      $("deleteArtworkBtn").addEventListener("click", deleteCurrentArtwork);
-
-      // admin artwork drop zone
-      const dz = $("artDropZone");
-      dz.addEventListener("dragover", (e)=>{ e.preventDefault(); dz.classList.add("dragover"); });
-      dz.addEventListener("dragleave", ()=> dz.classList.remove("dragover"));
-      dz.addEventListener("drop", (e)=>{
-        e.preventDefault(); dz.classList.remove("dragover");
-        const files = Array.from(e.dataTransfer.files||[]).filter(f=>f.type.startsWith("image/"));
-        pendingArtFiles = pendingArtFiles.concat(files);
-        renderAdminPreviews();
-      });
-
-      $("artFilesInput").addEventListener("change", (e)=>{
-        const files = Array.from(e.target.files||[]).filter(f=>f.type.startsWith("image/"));
-        pendingArtFiles = pendingArtFiles.concat(files);
-        renderAdminPreviews();
-      });
-
-      $("publishArtworkBtn").addEventListener("click", async ()=>{
-        try{ await publishArtwork(); }catch(e){ alert(e.message); }
-      });
-    }
-
-    /***********************
-     * 16) INIT
-     ************************/
-    async function init(){
-      wireEvents();
-      applyLanguage();
-      await loadSiteConfig();
-      subscribeArtworks();
-
-      onAuthStateChanged(auth, async (user)=>{
-        // If user exists, reload to get emailVerified changes after clicking email link
-        if(user) await reload(user);
-
-        isAdmin = computeIsAdmin(auth.currentUser);
-        refreshAuthUI();
-
-        // admin-only hints
-        if(isAdmin){
-          $("video-edit-btn").classList.remove("hidden");
-          $("artist-upload-hint").classList.remove("hidden");
-        }
-
-        // verify hint in login modal
-        const u = auth.currentUser;
-        if(u && !u.emailVerified){
-          $("verifyHint").classList.remove("hidden");
-        }else{
-          $("verifyHint").classList.add("hidden");
-        }
-
-        // refresh hints in modal if open
-        if(currentArtwork){
-          renderModal(currentArtwork);
-          await refreshLikeState(currentArtwork.id);
-        }
-      });
-    }
-
-    init();
-  </script>
 </body>
 </html>
