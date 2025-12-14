@@ -1,159 +1,1197 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-<meta charset="UTF-8" />
-<title>Hua Qing | Gongbi Art</title>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://unpkg.com/lucide@latest"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hua Qing | Fine Art of Gongbi</title>
+  <meta name="description" content="Discover the timeless serenity of Chinese Gongbi painting by Hua Qing. Hand-painted masterpieces on silk.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&family=Noto+Serif+SC:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root{
+      --paper-bg:#fdfbf7;
+      --ink-black:#2c2c2c;
+      --seal-red:#a83f39;
+      --jade-green:#687e75;
+    }
+    body{
+      background-color:var(--paper-bg);
+      color:var(--ink-black);
+      font-family:'Playfair Display','KaiTi',serif;
+      background-image:url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    }
+    .font-calligraphy{font-family:'Ma Shan Zheng',cursive;}
+    .font-song-art{font-family:'ZCOOL XiaoWei',serif;}
+    .font-serif-text{font-family:'Noto Serif SC',serif;}
+    .nav-link{position:relative;}
+    .nav-link::after{
+      content:'';position:absolute;width:0;height:1px;bottom:0;left:50%;
+      background-color:var(--seal-red);transition:all .3s ease;transform:translateX(-50%);
+    }
+    .nav-link:hover::after{width:80%;}
+    .seal{
+      display:inline-flex;align-items:center;justify-content:center;
+      width:48px;height:48px;background:var(--seal-red);color:#fff;border-radius:4px;
+      border:2px solid #8a2e29;box-shadow:2px 2px 4px rgba(0,0,0,.2);
+      font-family:'Ma Shan Zheng',cursive;font-size:18px;line-height:1;padding-top:4px;
+    }
+    .loader{
+      border:3px solid #f3f3f3;border-radius:50%;border-top:3px solid var(--seal-red);
+      width:24px;height:24px;animation:spin 1s linear infinite;display:inline-block;
+    }
+    @keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+
+    /* 拖拽区 */
+    .drop-zone{border:2px dashed var(--seal-red);background:#fff5f5;transition:all .3s;}
+    .drop-zone.dragover{background:#ffe0e0;border-color:red;}
+
+    /* ✅ Shorts 竖屏容器：9:16 */
+    .shorts-frame{
+      aspect-ratio: 9 / 16;
+      width: 100%;
+      max-width: 360px;          /* 你可以改大一点，比如 420px */
+      margin-left:auto;
+      margin-right:auto;
+      border-radius: 12px;
+      overflow:hidden;
+      background:#000;
+    }
+    @media (min-width: 1024px){
+      .shorts-frame{ max-width: 420px; } /* 大屏稍微更大 */
+    }
+
+    /* Admin 显示控制 */
+    .admin-only{display:none;}
+    body.is-admin .admin-only{display:block;}
+  </style>
 </head>
 
-<body class="bg-stone-50 text-stone-800">
+<body class="antialiased">
 
-<!-- ================= NAV ================= -->
-<nav class="fixed top-0 w-full bg-white/90 backdrop-blur z-50 border-b">
-  <div class="max-w-7xl mx-auto flex justify-between items-center px-6 h-16">
-    <h1 class="font-bold tracking-widest">HUA QING</h1>
-    <div class="flex gap-4 items-center">
-      <button id="authBtn" class="text-sm">Sign In</button>
-      <button id="adminBtn" class="hidden text-sm text-red-700">Admin</button>
+<!-- =================== NAV =================== -->
+<nav class="fixed w-full z-50 bg-[#fdfbf7]/90 backdrop-blur-sm border-b border-stone-200 transition-all duration-300" id="navbar">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-20">
+      <div class="flex-shrink-0 flex items-center gap-4">
+        <div class="seal" data-i18n="seal">Hua</div>
+        <span class="text-xl tracking-widest text-stone-800 font-bold pt-1">HUA QING ART</span>
+      </div>
+
+      <div class="hidden md:flex space-x-8 items-center">
+        <a href="#home" class="nav-link text-stone-600 hover:text-stone-900 px-1 py-2 text-sm uppercase tracking-widest transition-colors" data-i18n="nav.home">Home</a>
+        <a href="#about-gongbi" class="nav-link text-stone-600 hover:text-stone-900 px-1 py-2 text-sm uppercase tracking-widest transition-colors" data-i18n="nav.source">The Craft</a>
+        <a href="#artist" class="nav-link text-stone-600 hover:text-stone-900 px-1 py-2 text-sm uppercase tracking-widest transition-colors" data-i18n="nav.artist">Artist</a>
+        <a href="#gallery" class="nav-link text-stone-600 hover:text-stone-900 px-1 py-2 text-sm uppercase tracking-widest transition-colors" data-i18n="nav.gallery">Gallery</a>
+        <a href="#contact" class="bg-stone-800 text-stone-100 px-6 py-2 text-xs uppercase tracking-widest hover:bg-[#a83f39] transition-colors duration-300 shadow-lg" data-i18n="nav.contact">Collect</a>
+
+        <button id="langBtn" class="ml-4 text-xs font-bold border border-stone-300 px-3 py-1 rounded hover:border-[#a83f39] hover:text-[#a83f39] transition-colors font-serif">
+          <span id="lang-btn-text">中</span>
+        </button>
+
+        <!-- 用户区 -->
+        <div id="user-auth-section" class="ml-2 flex items-center gap-4">
+          <button id="openAuthBtn" class="flex items-center gap-2 text-stone-600 hover:text-[#a83f39]">
+            <i data-lucide="user" class="w-5 h-5"></i>
+            <span id="user-name-display" class="text-xs uppercase">Sign In</span>
+          </button>
+
+          <!-- Admin -->
+          <button id="openAdminBtn" class="hidden text-xs font-bold border border-[#a83f39] text-[#a83f39] px-3 py-1 rounded hover:bg-[#a83f39] hover:text-white transition-colors">
+            Admin
+          </button>
+
+          <button id="logoutBtn" class="hidden text-xs text-stone-500 hover:text-stone-900">Logout</button>
+        </div>
+      </div>
+
+      <div class="md:hidden flex items-center gap-4">
+        <button id="langBtnMobile" class="text-xs font-bold border border-stone-300 px-2 py-1 rounded">
+          <span id="lang-btn-text-mobile">中</span>
+        </button>
+        <button id="mobile-menu-btn" class="text-stone-600 hover:text-stone-900 focus:outline-none">
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="mobile-menu" class="hidden md:hidden bg-[#fdfbf7] border-b border-stone-200">
+    <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-center">
+      <a href="#home" class="block px-3 py-2 text-stone-600 hover:text-[#a83f39] font-serif text-lg" data-i18n="nav.home">Home</a>
+      <a href="#about-gongbi" class="block px-3 py-2 text-stone-600 hover:text-[#a83f39] font-serif text-lg" data-i18n="nav.source">The Craft</a>
+      <a href="#artist" class="block px-3 py-2 text-stone-600 hover:text-[#a83f39] font-serif text-lg" data-i18n="nav.artist">Artist</a>
+      <a href="#gallery" class="block px-3 py-2 text-stone-600 hover:text-[#a83f39] font-serif text-lg" data-i18n="nav.gallery">Gallery</a>
+      <button id="openAuthBtnMobile" class="block w-full px-3 py-2 text-stone-600 hover:text-[#a83f39] text-center font-serif text-lg">Sign In</button>
     </div>
   </div>
 </nav>
 
-<div class="h-16"></div>
+<!-- =================== HERO =================== -->
+<section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
+  <div class="absolute inset-0 z-0">
+    <img src="https://images.unsplash.com/photo-1695519895085-c13f63810486?q=80&w=2574&auto=format&fit=crop" class="w-full h-full object-cover opacity-20" alt="">
+    <div class="absolute inset-0 bg-gradient-to-b from-[#fdfbf7] via-transparent to-[#fdfbf7]"></div>
+  </div>
 
-<!-- ================= HERO ================= -->
-<section class="h-screen flex items-center justify-center bg-stone-100">
-  <h2 class="text-4xl italic">Timeless Serenity, Painted in Silk</h2>
+  <div class="relative z-10 text-center flex flex-col items-center p-6 w-full px-4">
+    <h2 class="text-[#a83f39] text-sm md:text-base tracking-[0.3em] md:tracking-[0.5em] mb-6 uppercase font-bold" data-i18n="hero.subtitle">The Ancient Art of Gongbi</h2>
+    <h1 class="text-4xl sm:text-5xl md:text-7xl mb-8 text-stone-800 font-serif italic tracking-wide whitespace-nowrap" data-i18n="hero.title">
+      Timeless Serenity, Painted in Silk
+    </h1>
+    <p class="text-lg md:text-2xl text-stone-600 font-light italic mb-12" data-i18n="hero.desc">"Where the microscopic world meets infinite mindfulness."</p>
+    <a href="#gallery" class="group relative inline-flex items-center justify-center px-10 py-4 overflow-hidden font-medium text-stone-600 border border-stone-400 rounded-full transition duration-300 ease-out hover:border-[#a83f39] hover:text-[#a83f39]">
+      <span class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-[#a83f39] group-hover:translate-x-0 ease">
+        <i data-lucide="arrow-right" class="w-6 h-6"></i>
+      </span>
+      <span class="absolute flex items-center justify-center w-full h-full text-stone-600 transition-all duration-300 transform group-hover:translate-x-full ease font-serif text-lg uppercase tracking-widest" data-i18n="hero.button">Explore Collection</span>
+      <span class="relative invisible font-serif text-lg" data-i18n="hero.button">Explore Collection</span>
+    </a>
+  </div>
 </section>
 
-<!-- ================= ABOUT / VIDEO ================= -->
-<section class="py-24 bg-white">
-  <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center px-6">
-    <div class="shadow-lg aspect-video">
-      <iframe
-        class="w-full h-full"
-        src="https://www.youtube.com/embed/zN0VzZRzlqM?autoplay=1&mute=1&loop=1&playlist=zN0VzZRzlqM&controls=0&modestbranding=1&playsinline=1"
-        allow="autoplay; encrypted-media; picture-in-picture"
-        allowfullscreen>
-      </iframe>
+<!-- =================== ABOUT / VIDEO =================== -->
+<section id="about-gongbi" class="py-24 bg-stone-100/50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+
+      <!-- ✅ 左侧视频（Shorts 9:16） -->
+      <div class="order-2 lg:order-1 relative">
+        <div class="absolute -top-4 -left-4 w-full h-full border border-stone-300 z-0"></div>
+
+        <div class="relative z-10 shadow-lg p-6 bg-white/70">
+          <div class="shorts-frame" id="aboutVideoContainer"></div>
+
+          <!-- Admin: 改视频 -->
+          <div class="admin-only mt-4 flex justify-end">
+            <button id="changeVideoBtn" class="bg-black/80 text-white px-4 py-2 rounded hover:bg-[#a83f39] transition-colors flex items-center gap-2 text-xs">
+              <i data-lucide="edit" class="w-4 h-4"></i> Change Video
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 右侧文字 -->
+      <div class="order-1 lg:order-2">
+        <div class="flex items-center gap-4 mb-6">
+          <div class="h-px w-16 bg-[#a83f39]"></div>
+          <span class="text-[#a83f39] uppercase tracking-widest text-sm font-bold" data-i18n="gongbi.label">The Process</span>
+        </div>
+        <h2 class="text-4xl md:text-5xl font-serif mb-8 text-stone-800 italic" data-i18n="gongbi.title">A Thousand Strokes of Silence</h2>
+        <div class="space-y-6 text-stone-600 text-lg leading-loose font-serif-text">
+          <p data-i18n="gongbi.p1">
+            Gongbi (Meticulous Brush) is not merely painting; it is a form of meditation rooted in the Song Dynasty (960–1279).
+          </p>
+          <p data-i18n="gongbi.p2">
+            The process is rigorous and slow. Using brushes as fine as a single hair, the artist outlines the soul of the subject.
+          </p>
+          <p class="italic text-stone-500" data-i18n="gongbi.p3">
+            A single lotus petal may require fifty layers of wash to achieve its ethereal glow.
+          </p>
+        </div>
+      </div>
+
     </div>
-    <div>
-      <h3 class="text-3xl italic mb-6">The Craft</h3>
-      <p class="leading-loose">
-        Gongbi is a meditation of patience and precision.
-        Each stroke carries silence and time.
+  </div>
+</section>
+
+<!-- =================== ARTIST =================== -->
+<section id="artist" class="py-24">
+  <div class="max-w-5xl mx-auto px-4 text-center">
+    <div class="mb-12 inline-block relative group">
+      <div id="artist-img-container" class="relative w-40 h-40 mx-auto mb-6 rounded-full overflow-hidden border-4 border-white shadow-xl">
+        <img id="artist-img" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1200&auto=format&fit=crop" alt="Artist" class="w-full h-full object-cover">
+      </div>
+
+      <!-- Admin 拖拽作者头像 -->
+      <div class="admin-only text-xs text-stone-500">
+        Drag & Drop a photo on the avatar to update (Admin)
+      </div>
+
+      <h2 class="text-5xl font-serif text-stone-800 mb-2 italic" data-i18n="artist.name">Hua Qing</h2>
+      <p class="text-[#a83f39] font-sans text-xs uppercase tracking-[0.3em]" data-i18n="artist.title">Contemporary Master of Gongbi</p>
+    </div>
+
+    <div class="prose prose-stone mx-auto text-xl leading-loose text-stone-600 max-w-3xl font-serif-text">
+      <p data-i18n="artist.bio1" class="mb-6">
+        Born in the mist-shrouded water towns of Jiangnan, Hua Qing began her dialogue with ink and silk before she could write.
+      </p>
+      <p data-i18n="artist.bio2">
+        In a world obsessed with speed, Hua Qing rebels with slowness. Her work is a sanctuary.
       </p>
     </div>
   </div>
 </section>
 
-<!-- ================= GALLERY ================= -->
-<section class="py-24 bg-stone-100">
-  <div class="max-w-7xl mx-auto px-6">
-    <h3 class="text-4xl italic text-center mb-12">Gallery</h3>
-    <div id="gallery" class="columns-1 md:columns-3 gap-6"></div>
+<!-- =================== GALLERY =================== -->
+<section id="gallery" class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <span class="text-[#a83f39] uppercase tracking-widest text-xs font-bold block mb-3" data-i18n="gallery.label">Curated Collection</span>
+      <h2 class="text-5xl font-serif text-stone-800 italic" data-i18n="gallery.title">Ink & Rhythm</h2>
+    </div>
+
+    <div class="flex justify-center gap-8 mb-12 text-sm text-stone-500 uppercase tracking-widest font-sans">
+      <button class="text-[#a83f39] border-b border-[#a83f39] pb-1 filter-btn" data-filter="all" data-i18n="gallery.filter.all">All Works</button>
+      <button class="hover:text-stone-800 transition-colors filter-btn" data-filter="flower" data-i18n="gallery.filter.flower">Flowers</button>
+      <button class="hover:text-stone-800 transition-colors filter-btn" data-filter="animal" data-i18n="gallery.filter.animal">Animals</button>
+      <button class="hover:text-stone-800 transition-colors filter-btn" data-filter="bird_flower" data-i18n="gallery.filter.bird_flower">Birds & Flowers</button>
+    </div>
+
+    <div id="gallery-grid" class="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8 min-h-[300px]">
+      <div class="col-span-full flex justify-center items-center h-40 w-full">
+        <div class="loader"></div>
+      </div>
+    </div>
+
+    <!-- Admin: 新增作品 FAB -->
+    <button id="add-artwork-fab" class="admin-only fixed bottom-8 right-8 w-14 h-14 bg-[#a83f39] text-white rounded-full shadow-lg flex items-center justify-center hover:bg-red-800 transition-transform hover:scale-110 z-40">
+      <i data-lucide="plus" class="w-8 h-8"></i>
+    </button>
   </div>
 </section>
 
-<!-- ================= AUTH MODAL ================= -->
-<div id="authModal" class="fixed inset-0 bg-black/70 hidden flex items-center justify-center z-50">
-  <div class="bg-white p-6 rounded w-80 space-y-4">
-    <h4 class="text-xl font-bold text-center">Account</h4>
+<!-- =================== CONTACT =================== -->
+<section id="contact" class="bg-stone-900 text-stone-200 py-24">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
+      <div>
+        <h2 class="text-4xl font-serif text-white mb-6 italic" data-i18n="contact.title">Acquire & Connect</h2>
+        <p class="text-stone-400 mb-8 leading-relaxed font-serif-text text-lg" data-i18n="contact.desc">
+          Bring a piece of Eastern tranquility into your home.
+        </p>
+      </div>
 
-    <input id="regEmail" placeholder="Email" class="border p-2 w-full">
-    <input id="regPassword" placeholder="Password" type="password" class="border p-2 w-full">
-    <input id="regName" placeholder="Nickname" class="border p-2 w-full">
+      <div class="bg-stone-800 p-8 rounded-lg shadow-2xl">
+        <form onsubmit="event.preventDefault(); alert('Thank you. We will contact you shortly.');" class="space-y-6 font-sans">
+          <div>
+            <label class="block text-xs text-stone-400 mb-2 uppercase tracking-widest" data-i18n="form.name">Your Name</label>
+            <input type="text" class="w-full bg-stone-700 border border-stone-600 text-white px-4 py-3 focus:outline-none focus:border-[#a83f39] transition-colors">
+          </div>
+          <div>
+            <label class="block text-xs text-stone-400 mb-2 uppercase tracking-widest" data-i18n="form.email">Email Address</label>
+            <input type="email" class="w-full bg-stone-700 border border-stone-600 text-white px-4 py-3 focus:outline-none focus:border-[#a83f39] transition-colors">
+          </div>
+          <div>
+            <label class="block text-xs text-stone-400 mb-2 uppercase tracking-widest" data-i18n="form.message">Inquiry / Message</label>
+            <textarea rows="4" class="w-full bg-stone-700 border border-stone-600 text-white px-4 py-3 focus:outline-none focus:border-[#a83f39] transition-colors"></textarea>
+          </div>
+          <button type="submit" class="w-full bg-[#a83f39] text-white py-4 uppercase tracking-widest hover:bg-red-800 transition-colors text-xs font-bold" data-i18n="form.submit">
+            Send Inquiry
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <button id="registerBtn" class="w-full bg-stone-800 text-white py-2">Register</button>
-    <button id="loginBtn" class="w-full border py-2">Login</button>
-    <button onclick="closeAuth()" class="w-full text-xs text-stone-400">Close</button>
+<footer class="bg-stone-950 text-stone-600 py-12 text-center text-sm border-t border-stone-900">
+  <p class="mb-2 font-serif">&copy; 2024 Hua Qing Art. All rights reserved.</p>
+  <p class="font-serif italic text-xs" data-i18n="footer.tagline">Designed for the beauty of tranquility.</p>
+</footer>
+
+<!-- =================== AUTH MODAL =================== -->
+<div id="authModal" class="fixed inset-0 z-[80] hidden bg-black/80 flex items-center justify-center p-4">
+  <div class="bg-white p-8 rounded-lg max-w-sm w-full shadow-2xl relative">
+    <button id="closeAuthModal" class="absolute top-4 right-4 text-stone-500 hover:text-black">
+      <i data-lucide="x" class="w-6 h-6"></i>
+    </button>
+
+    <div class="flex justify-center gap-6 mb-6 font-serif border-b border-stone-200 pb-2">
+      <button id="tab-login" class="text-xl font-bold text-[#a83f39] border-b-2 border-[#a83f39] pb-1 transition-colors">Login</button>
+      <button id="tab-register" class="text-xl text-stone-400 hover:text-stone-600 pb-1 transition-colors">Register</button>
+    </div>
+
+    <!-- Login -->
+    <div id="form-login" class="space-y-4">
+      <input type="email" id="login-email" class="w-full border border-stone-300 p-2 rounded font-serif text-sm" placeholder="Email">
+      <input type="password" id="login-password" class="w-full border border-stone-300 p-2 rounded font-serif text-sm" placeholder="Password">
+      <button id="loginBtn" class="w-full bg-[#a83f39] text-white py-2 rounded font-serif hover:bg-red-800">Sign In</button>
+      <p class="text-xs text-stone-500 leading-snug">
+        If you just verified email, sign in again.
+      </p>
+    </div>
+
+    <!-- Register -->
+    <div id="form-register" class="space-y-4 hidden">
+      <input type="email" id="reg-email" class="w-full border border-stone-300 p-2 rounded font-serif text-sm" placeholder="Email">
+      <input type="password" id="reg-password" class="w-full border border-stone-300 p-2 rounded font-serif text-sm" placeholder="Password (>= 6)">
+      <input type="text" id="reg-nickname" class="w-full border border-stone-300 p-2 rounded font-serif text-sm" placeholder="Nickname">
+      <button id="registerBtn" class="w-full bg-[#a83f39] text-white py-2 rounded font-serif hover:bg-red-800">Create Account</button>
+
+      <div class="text-xs text-stone-500 leading-snug">
+        We will send a verification email. Please verify before admin actions.
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- ================= ADMIN UPLOAD ================= -->
-<button id="addArtworkBtn"
-  class="hidden fixed bottom-6 right-6 bg-red-700 text-white w-14 h-14 rounded-full text-3xl">+</button>
+<!-- =================== ADMIN MODAL =================== -->
+<div id="adminModal" class="fixed inset-0 z-[85] hidden bg-black/80 flex items-center justify-center p-4">
+  <div class="bg-white p-8 rounded-lg max-w-lg w-full shadow-2xl relative max-h-[80vh] overflow-y-auto">
+    <button id="closeAdminModal" class="absolute top-4 right-4 text-stone-500 hover:text-black">
+      <i data-lucide="x" class="w-6 h-6"></i>
+    </button>
 
-<input type="file" id="fileInput" multiple hidden>
+    <h3 class="text-2xl font-bold text-stone-800 mb-4 text-center font-serif">Admin Dashboard</h3>
+    <p class="text-xs text-stone-500 mb-6 text-center">
+      Admin is determined by email allowlist + emailVerified.
+    </p>
 
-<!-- ================= FIREBASE ================= -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <button id="viewUsersBtn" class="border border-stone-300 py-2 rounded text-xs hover:bg-stone-50 font-serif">View Users</button>
+      <button id="seedBtn" class="border border-stone-300 py-2 rounded text-xs hover:bg-stone-50 font-serif">Seed Demo Artworks</button>
+      <button id="resetArtBtn" class="border border-red-500 text-red-600 py-2 rounded text-xs hover:bg-red-50 font-serif">Delete ALL Artworks</button>
+      <button id="changeVideoBtn2" class="border border-[#a83f39] text-[#a83f39] py-2 rounded text-xs hover:bg-[#a83f39] hover:text-white font-serif">
+        Change About Video
+      </button>
+    </div>
+
+    <div id="userListBox" class="hidden mt-6">
+      <h4 class="font-bold text-sm mb-2">Registered Users</h4>
+      <div id="userList" class="bg-stone-50 border border-stone-200 rounded p-3 text-xs space-y-2 max-h-52 overflow-y-auto"></div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== ADD ARTWORK MODAL =================== -->
+<div id="addModal" class="fixed inset-0 z-[90] hidden bg-black/80 flex items-center justify-center p-4">
+  <div class="bg-white p-6 rounded-lg max-w-md w-full shadow-2xl max-h-[90vh] overflow-y-auto">
+    <div class="flex items-center justify-between mb-3">
+      <h3 class="text-xl font-bold text-stone-800 font-serif">Add New Artwork</h3>
+      <button id="closeAddModal" class="text-stone-500 hover:text-black"><i data-lucide="x"></i></button>
+    </div>
+
+    <div class="space-y-3 font-serif">
+      <input type="text" id="new-title-zh" placeholder="Chinese Title" class="w-full border p-2 rounded">
+      <input type="text" id="new-title-en" placeholder="English Title" class="w-full border p-2 rounded">
+      <input type="text" id="new-desc-zh" placeholder="Desc (CN): Size | Material" class="w-full border p-2 rounded">
+      <input type="text" id="new-desc-en" placeholder="Desc (EN): Size | Material" class="w-full border p-2 rounded">
+
+      <div id="drop-area" class="drop-zone w-full h-32 flex flex-col items-center justify-center rounded cursor-pointer text-stone-400 text-xs p-2 relative">
+        <i data-lucide="images" class="w-8 h-8 mb-2 text-stone-300"></i>
+        <p>Drag & Drop Images Here</p>
+        <input type="file" id="fileElem" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept="image/*" multiple>
+      </div>
+
+      <div id="upload-previews" class="flex gap-2 overflow-x-auto h-20 border border-stone-200 p-1 rounded"></div>
+
+      <select id="new-category" class="w-full border p-2 rounded">
+        <option value="flower">Flowers</option>
+        <option value="animal">Animals</option>
+        <option value="bird_flower">Birds & Flowers</option>
+      </select>
+
+      <button id="publishArtworkBtn" class="w-full bg-[#a83f39] text-white py-2 rounded mt-2">Publish</button>
+      <p class="text-[11px] text-stone-500 leading-snug">
+        Images will upload to Firebase Storage.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- =================== DETAILS MODAL =================== -->
+<div id="imgModal" class="fixed inset-0 z-[60] hidden bg-black/95 flex items-center justify-center p-4 overflow-y-auto">
+  <button id="closeImgModal" class="fixed top-6 right-6 text-white hover:text-[#a83f39] transition-colors z-[70]">
+    <i data-lucide="x" class="w-10 h-10"></i>
+  </button>
+
+  <div class="max-w-7xl w-full flex flex-col lg:flex-row gap-8 items-start justify-center mt-10 mb-10">
+    <div class="lg:w-2/3 w-full bg-stone-900/50 p-4 rounded min-h-[520px] max-h-[90vh] overflow-y-auto">
+      <div id="modalImagesContainer" class="flex flex-col gap-6"></div>
+    </div>
+
+    <div class="text-white lg:w-1/3 w-full bg-stone-900/80 p-6 rounded-lg backdrop-blur-md h-fit">
+      <div id="img-admin-edit-panel" class="hidden mb-6 p-4 bg-stone-800 rounded border border-[#a83f39]">
+        <h4 class="text-[#a83f39] font-bold mb-3 font-serif">Admin Controls</h4>
+
+        <select id="modal-status-select" class="w-full bg-stone-700 text-white p-2 rounded border border-stone-600 font-serif text-xs mb-2">
+          <option value="Available">Available</option>
+          <option value="Sold">Sold</option>
+          <option value="Reserved">Reserved</option>
+        </select>
+
+        <div class="flex gap-2">
+          <button id="updateStatusBtn" class="flex-1 bg-green-800 hover:bg-green-700 text-white py-1 px-2 rounded text-sm font-serif">Update Status</button>
+          <button id="deleteArtworkBtn" class="flex-1 bg-red-800 hover:bg-red-700 text-white py-1 px-2 rounded text-sm font-serif">Delete</button>
+        </div>
+      </div>
+
+      <h3 id="modalTitle" class="text-4xl mb-2 text-[#a83f39] font-serif italic tracking-wide"></h3>
+      <p id="modalDesc" class="text-stone-300 text-lg font-serif italic mb-4"></p>
+
+      <div class="flex items-center gap-3 mb-3">
+        <div id="modalStatus" class="inline-block px-3 py-1 bg-stone-800 text-sm tracking-widest font-serif"></div>
+        <button id="likeBtn" class="inline-flex items-center gap-2 px-3 py-1 bg-stone-800 hover:bg-stone-700 rounded text-sm">
+          <i data-lucide="heart" class="w-4 h-4 text-[#a83f39]"></i>
+          <span id="likeCount">0</span>
+        </button>
+      </div>
+
+      <div class="mt-8 border-t border-stone-700 pt-6">
+        <h4 class="text-lg font-bold mb-4 font-serif">Comments</h4>
+        <div id="comments-list" class="space-y-3 max-h-[260px] overflow-y-auto mb-4 pr-2"></div>
+
+        <div id="comment-form-container" class="flex gap-2">
+          <input id="new-comment-input" type="text" placeholder="Share your thoughts..." class="flex-1 bg-stone-800 border border-stone-600 rounded px-3 py-2 text-sm text-white">
+          <button id="postCommentBtn" class="bg-[#a83f39] text-white px-4 py-2 rounded text-sm font-serif">Post</button>
+        </div>
+
+        <p id="commentHint" class="text-xs text-stone-400 mt-2 hidden">Please sign in to comment.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== SCRIPT =================== -->
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, updateProfile, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+  import {
+    getAuth, onAuthStateChanged,
+    createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut,
+    updateProfile, sendEmailVerification
+  } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBDvZ7oykdugl6DQH_p-0KOgy0sfMuMmFc",
-  authDomain: "qinghua-852c1.firebaseapp.com",
-  projectId: "qinghua-852c1",
-  storageBucket: "qinghua-852c1.appspot.com",
-  appId: "1:391709518256:web:a18730b2d099c362e9ce75"
-};
+  import {
+    getFirestore, collection, addDoc, getDocs, doc, getDoc, setDoc, updateDoc, deleteDoc,
+    query, orderBy, onSnapshot, serverTimestamp, writeBatch
+  } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-const ADMIN_EMAILS = ["elin641@163.com"];
+  import {
+    getStorage, ref, uploadBytes, getDownloadURL, deleteObject
+  } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const storage = getStorage(app);
+  // ========= YOUR FIREBASE CONFIG =========
+  const firebaseConfig = {
+    apiKey: "AIzaSyBDvZ7oykdugl6DQH_p-0KOgy0sfMuMmFc",
+    authDomain: "qinghua-852c1.firebaseapp.com",
+    projectId: "qinghua-852c1",
+    storageBucket: "qinghua-852c1.appspot.com",
+    messagingSenderId: "391709518256",
+    appId: "1:391709518256:web:a18730b2d099c362e9ce75",
+    measurementId: "G-8T36VSX6B6"
+  };
 
-/* ===== AUTH ===== */
-const authModal = document.getElementById("authModal");
-authBtn.onclick = () => authModal.classList.remove("hidden");
-function closeAuth(){ authModal.classList.add("hidden"); }
+  // ========= ADMIN =========
+  const ADMIN_EMAILS = ["elin641@163.com"];
 
-registerBtn.onclick = async () => {
-  const email = regEmail.value;
-  const pass = regPassword.value;
-  const name = regName.value;
-  const cred = await createUserWithEmailAndPassword(auth, email, pass);
-  await updateProfile(cred.user, { displayName: name });
-  await sendEmailVerification(cred.user);
-  alert("Check your email to verify.");
-};
+  // ========= INIT =========
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const storage = getStorage(app);
 
-loginBtn.onclick = async () => {
-  await signInWithEmailAndPassword(auth, regEmail.value, regPassword.value);
-};
+  // ========= PATHS =========
+  const ARTWORKS = "artworks";
+  const COMMENTS = "comments";
+  const USERS = "users";
+  const SITE = "site";          // doc: site/config
+  const ARTIST = "artist";      // doc: artist/profile
+  const siteDocRef = doc(db, SITE, "config");
+  const artistDocRef = doc(db, ARTIST, "profile");
 
-onAuthStateChanged(auth, user => {
-  authModal.classList.add("hidden");
-  authBtn.textContent = user ? user.displayName : "Sign In";
+  // ========= STATE =========
+  let currentLang = localStorage.getItem("huaqing_lang") || "en";
+  let currentArtwork = null;
+  let currentUser = null;
+  let isAdmin = false;
 
-  if (user && ADMIN_EMAILS.includes(user.email)) {
-    adminBtn.classList.remove("hidden");
-    addArtworkBtn.classList.remove("hidden");
-  }
-});
+  // ========= I18N =========
+  const i18n = {
+    zh: {
+      "nav.home":"首页","nav.source":"工笔之源","nav.artist":"关于画家","nav.gallery":"作品赏析","nav.contact":"收藏/联系","seal":"花青",
+      "hero.subtitle":"工笔画艺术","hero.title":"尽精微 致广大","hero.desc":"“于静谧中见乾坤，于细微处见广大。”","hero.button":"进入画廊",
+      "gongbi.label":"关于工笔","gongbi.title":"巧密而精细",
+      "gongbi.p1":"工笔画，讲究取神得形，以线立形，以形达意。",
+      "gongbi.p2":"层层渲染、极尽精微的笔触，是一种慢的修行。",
+      "gongbi.p3":"一瓣莲花，可能需要几十遍罩染才能呈现光泽。",
+      "artist.name":"花青","artist.title":"当代青年工笔画家",
+      "artist.bio1":"花青，生于江南水乡，自幼习画。",
+      "artist.bio2":"在快节奏生活中，她用“慢”与“静”留住万物的生命状态。",
+      "gallery.label":"精选作品","gallery.title":"墨韵流芳",
+      "gallery.filter.all":"全部","gallery.filter.flower":"花","gallery.filter.animal":"动物","gallery.filter.bird_flower":"花鸟",
+      "contact.title":"收藏与联络","contact.desc":"如果您对作品感兴趣或有定制需求，欢迎联系。",
+      "form.name":"姓名","form.email":"邮箱","form.message":"留言","form.submit":"发送留言",
+      "footer.tagline":"于静谧中见乾坤"
+    },
+    en: {
+      "nav.home":"Home","nav.source":"The Craft","nav.artist":"Artist","nav.gallery":"Gallery","nav.contact":"Collect","seal":"Hua",
+      "hero.subtitle":"The Ancient Art of Gongbi","hero.title":"Timeless Serenity, Painted in Silk","hero.desc":"“Where the microscopic world meets infinite mindfulness.”","hero.button":"Explore Collection",
+      "gongbi.label":"The Process","gongbi.title":"A Thousand Strokes of Silence",
+      "gongbi.p1":"Gongbi is not merely painting; it is meditation through precision.",
+      "gongbi.p2":"Layer by layer, slow and meticulous—time becomes visible.",
+      "gongbi.p3":"A single petal may require dozens of washes to glow.",
+      "artist.name":"Hua Qing","artist.title":"Contemporary Master of Gongbi",
+      "artist.bio1":"Born in Jiangnan, Hua Qing began her dialogue with ink and silk early in life.",
+      "artist.bio2":"She rebels with slowness, inviting viewers to pause and breathe.",
+      "gallery.label":"Curated Collection","gallery.title":"Ink & Rhythm",
+      "gallery.filter.all":"All Works","gallery.filter.flower":"Flowers","gallery.filter.animal":"Animals","gallery.filter.bird_flower":"Birds & Flowers",
+      "contact.title":"Acquire & Connect","contact.desc":"For acquisition inquiries, commissions, or collaboration, please contact us.",
+      "form.name":"Your Name","form.email":"Email Address","form.message":"Inquiry / Message","form.submit":"Send Inquiry",
+      "footer.tagline":"Designed for the beauty of tranquility."
+    }
+  };
 
-/* ===== GALLERY ===== */
-const gallery = document.getElementById("gallery");
-onSnapshot(collection(db, "artworks"), snap => {
-  gallery.innerHTML = "";
-  snap.forEach(d => {
-    const img = document.createElement("img");
-    img.src = d.data().img;
-    img.className = "mb-6 rounded shadow";
-    gallery.appendChild(img);
-  });
-});
-
-/* ===== ADMIN UPLOAD ===== */
-addArtworkBtn.onclick = () => fileInput.click();
-fileInput.onchange = async () => {
-  for (let file of fileInput.files) {
-    const r = ref(storage, "artworks/" + Date.now() + file.name);
-    await uploadBytes(r, file);
-    const url = await getDownloadURL(r);
-    await addDoc(collection(db, "artworks"), {
-      img: url,
-      createdAt: serverTimestamp()
+  // ========= HELPERS =========
+  function applyLanguage(){
+    document.getElementById("lang-btn-text").innerText = currentLang === "zh" ? "EN" : "中";
+    document.getElementById("lang-btn-text-mobile").innerText = currentLang === "zh" ? "EN" : "中";
+    document.querySelectorAll("[data-i18n]").forEach(el=>{
+      const k = el.getAttribute("data-i18n");
+      if(i18n[currentLang][k]) el.innerHTML = i18n[currentLang][k];
     });
   }
-};
+
+  function setShortsEmbed(container, urlOrId){
+    // 支持：shorts链接 / watch?v= / youtu.be / 直接id
+    let id = urlOrId?.trim();
+    if(!id) return;
+
+    if(id.includes("shorts/")) id = id.split("shorts/")[1].split(/[?&/]/)[0];
+    else if(id.includes("watch?v=")) id = id.split("watch?v=")[1].split("&")[0];
+    else if(id.includes("youtu.be/")) id = id.split("youtu.be/")[1].split(/[?&/]/)[0];
+
+    const src = `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&controls=0&modestbranding=1&playsinline=1`;
+    container.innerHTML = `
+      <iframe class="w-full h-full"
+        src="${src}"
+        title="About Video"
+        frameborder="0"
+        allow="autoplay; encrypted-media; picture-in-picture"
+        allowfullscreen></iframe>
+    `;
+  }
+
+  function escapeHtml(s){
+    return (s||"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
+  }
+
+  // ========= UI HOOKS =========
+  const mobileBtn = document.getElementById("mobile-menu-btn");
+  mobileBtn.addEventListener("click", ()=>{
+    document.getElementById("mobile-menu").classList.toggle("hidden");
+    lucide.createIcons();
+  });
+
+  document.getElementById("langBtn").onclick = ()=>{
+    currentLang = currentLang === "zh" ? "en" : "zh";
+    localStorage.setItem("huaqing_lang", currentLang);
+    applyLanguage();
+    renderGalleryCached();
+  };
+  document.getElementById("langBtnMobile").onclick = document.getElementById("langBtn").onclick;
+
+  // Auth modal
+  const authModal = document.getElementById("authModal");
+  const openAuth = ()=>{ authModal.classList.remove("hidden"); };
+  const closeAuth = ()=>{ authModal.classList.add("hidden"); };
+
+  document.getElementById("openAuthBtn").onclick = openAuth;
+  document.getElementById("openAuthBtnMobile").onclick = openAuth;
+  document.getElementById("closeAuthModal").onclick = closeAuth;
+
+  // Tabs
+  const tabLogin = document.getElementById("tab-login");
+  const tabRegister = document.getElementById("tab-register");
+  const formLogin = document.getElementById("form-login");
+  const formRegister = document.getElementById("form-register");
+
+  function switchTab(t){
+    if(t==="login"){
+      formLogin.classList.remove("hidden");
+      formRegister.classList.add("hidden");
+      tabLogin.classList.add("text-[#a83f39]","border-b-2","border-[#a83f39]");
+      tabLogin.classList.remove("text-stone-400");
+      tabRegister.classList.remove("text-[#a83f39]","border-b-2","border-[#a83f39]");
+      tabRegister.classList.add("text-stone-400");
+    }else{
+      formLogin.classList.add("hidden");
+      formRegister.classList.remove("hidden");
+      tabRegister.classList.add("text-[#a83f39]","border-b-2","border-[#a83f39]");
+      tabRegister.classList.remove("text-stone-400");
+      tabLogin.classList.remove("text-[#a83f39]","border-b-2","border-[#a83f39]");
+      tabLogin.classList.add("text-stone-400");
+    }
+  }
+  tabLogin.onclick = ()=>switchTab("login");
+  tabRegister.onclick = ()=>switchTab("register");
+
+  // ========= AUTH ACTIONS =========
+  document.getElementById("registerBtn").onclick = async ()=>{
+    const email = document.getElementById("reg-email").value.trim();
+    const pass = document.getElementById("reg-password").value;
+    const nickname = document.getElementById("reg-nickname").value.trim();
+
+    if(!email.includes("@")) return alert("Invalid email");
+    if(!pass || pass.length<6) return alert("Password must be at least 6 characters");
+    if(!nickname) return alert("Please enter a nickname");
+
+    try{
+      const cred = await createUserWithEmailAndPassword(auth, email, pass);
+      await updateProfile(cred.user, { displayName: nickname });
+      await sendEmailVerification(cred.user);
+
+      await setDoc(doc(db, USERS, cred.user.uid), {
+        uid: cred.user.uid,
+        email,
+        nickname,
+        createdAt: serverTimestamp(),
+        emailVerified: false
+      });
+
+      alert("Registered! Please check your email to verify, then login again.");
+      switchTab("login");
+    }catch(e){
+      alert("Register failed: " + e.message);
+    }
+  };
+
+  document.getElementById("loginBtn").onclick = async ()=>{
+    const email = document.getElementById("login-email").value.trim();
+    const pass = document.getElementById("login-password").value;
+    try{
+      const cred = await signInWithEmailAndPassword(auth, email, pass);
+      await cred.user.reload();
+
+      // sync verified flag
+      await updateDoc(doc(db, USERS, cred.user.uid), {
+        emailVerified: cred.user.emailVerified
+      }).catch(()=>{});
+
+      closeAuth();
+    }catch(e){
+      alert("Login failed: " + e.message);
+    }
+  };
+
+  document.getElementById("logoutBtn").onclick = async ()=>{
+    await signOut(auth);
+  };
+
+  // ========= ADMIN MODAL =========
+  const adminModal = document.getElementById("adminModal");
+  document.getElementById("openAdminBtn").onclick = ()=>adminModal.classList.remove("hidden");
+  document.getElementById("closeAdminModal").onclick = ()=>adminModal.classList.add("hidden");
+  document.getElementById("changeVideoBtn2").onclick = ()=>document.getElementById("changeVideoBtn").click();
+
+  // ========= ABOUT VIDEO =========
+  // 默认你给的 Shorts： https://www.youtube.com/shorts/zN0VzZRzlqM
+  const aboutVideoContainer = document.getElementById("aboutVideoContainer");
+  let aboutVideoUrl = "https://www.youtube.com/shorts/zN0VzZRzlqM";
+  setShortsEmbed(aboutVideoContainer, aboutVideoUrl);
+
+  async function loadSiteConfig(){
+    const snap = await getDoc(siteDocRef);
+    if(snap.exists()){
+      const data = snap.data();
+      if(data?.aboutVideoUrl){
+        aboutVideoUrl = data.aboutVideoUrl;
+        setShortsEmbed(aboutVideoContainer, aboutVideoUrl);
+      }
+    }
+  }
+  async function saveAboutVideo(){
+    const newUrl = prompt("Paste YouTube Shorts/YouTube link (or MP4 URL):", aboutVideoUrl || "");
+    if(!newUrl) return;
+
+    // 允许 mp4
+    if(newUrl.toLowerCase().endsWith(".mp4")){
+      aboutVideoContainer.innerHTML = `
+        <video class="w-full h-full object-cover" src="${newUrl}" autoplay muted loop playsinline controls></video>
+      `;
+    }else{
+      setShortsEmbed(aboutVideoContainer, newUrl);
+    }
+
+    await setDoc(siteDocRef, { aboutVideoUrl: newUrl }, { merge: true });
+    alert("Video updated!");
+  }
+  document.getElementById("changeVideoBtn").onclick = ()=> {
+    if(!isAdmin) return alert("Admin only.");
+    saveAboutVideo();
+  };
+
+  // ========= ARTIST AVATAR (ADMIN drag-drop) =========
+  const artistBox = document.getElementById("artist-img-container");
+  const artistImg = document.getElementById("artist-img");
+
+  artistBox.addEventListener("dragover", (e)=>{ if(!isAdmin) return; e.preventDefault(); });
+  artistBox.addEventListener("drop", async (e)=>{
+    if(!isAdmin) return;
+    e.preventDefault();
+    const file = e.dataTransfer.files?.[0];
+    if(!file || !file.type.startsWith("image/")) return alert("Please drop an image file.");
+
+    try{
+      const path = `artist/avatar_${Date.now()}_${file.name}`;
+      const r = ref(storage, path);
+      await uploadBytes(r, file);
+      const url = await getDownloadURL(r);
+      await setDoc(artistDocRef, { photoUrl: url, storagePath: path }, { merge: true });
+      artistImg.src = url;
+      alert("Avatar updated!");
+    }catch(err){
+      alert("Upload failed: " + err.message);
+    }
+  });
+
+  async function loadArtist(){
+    const snap = await getDoc(artistDocRef);
+    if(snap.exists() && snap.data()?.photoUrl){
+      artistImg.src = snap.data().photoUrl;
+    }
+  }
+
+  // ========= ARTWORKS / GALLERY =========
+  const grid = document.getElementById("gallery-grid");
+  let artworksCache = [];
+
+  function renderGallery(list){
+    artworksCache = list.slice();
+    grid.innerHTML = "";
+
+    const activeFilter = document.querySelector(".filter-btn.border-b")?.getAttribute("data-filter") || "all";
+    const filtered = activeFilter==="all" ? list : list.filter(x=>x.category===activeFilter);
+
+    if(filtered.length===0){
+      grid.innerHTML = `<div class="text-center text-stone-400 py-10">No artworks yet.</div>`;
+      return;
+    }
+
+    filtered.forEach(art=>{
+      const title = currentLang==="zh" ? art.title_zh : art.title_en;
+      const desc  = currentLang==="zh" ? art.desc_zh : art.desc_en;
+      const mainImg = (art.images && art.images[0]) || "";
+      const status = art.status || "Available";
+
+      let statusClass = (status==="Sold") ? "bg-stone-700 text-stone-200"
+        : (status==="Reserved") ? "bg-stone-500 text-white"
+        : "bg-[#a83f39] text-white";
+
+      const card = document.createElement("div");
+      card.className = "group cursor-pointer break-inside-avoid mb-8 relative";
+      card.innerHTML = `
+        <div class="bg-white shadow-md rounded overflow-hidden relative">
+          <img src="${mainImg}" alt="${escapeHtml(title)}" class="w-full h-auto object-cover">
+          <div class="absolute inset-0 bg-black/0 hover:bg-black/20 transition-colors z-20 flex items-center justify-center">
+            <span class="text-white border border-white px-6 py-2 tracking-widest text-sm font-song-art opacity-0 group-hover:opacity-100 transition-opacity">VIEW</span>
+          </div>
+        </div>
+        <div class="mt-4 text-center">
+          <h3 class="text-xl font-bold text-stone-800 font-serif">${escapeHtml(title)}</h3>
+          <p class="text-stone-500 text-sm mt-1 font-serif italic">${escapeHtml(desc||"")}</p>
+          <div class="mt-2 flex items-center justify-center gap-2">
+            <span class="inline-block px-2 py-0.5 text-xs ${statusClass} font-sans uppercase tracking-widest">${status}</span>
+          </div>
+        </div>
+      `;
+      card.onclick = ()=>openArtworkModal(art);
+      grid.appendChild(card);
+    });
+
+    lucide.createIcons();
+  }
+
+  function renderGalleryCached(){
+    renderGallery(artworksCache);
+  }
+
+  // live snapshot
+  onSnapshot(query(collection(db, ARTWORKS), orderBy("createdAt","desc")), (snap)=>{
+    const list = [];
+    snap.forEach(d=>list.push({ id:d.id, ...d.data() }));
+    if(list.length===0){
+      // no seed by default
+      grid.innerHTML = `<div class="text-center text-stone-400 py-10">No artworks yet. (Admin can add)</div>`;
+      return;
+    }
+    renderGallery(list);
+  });
+
+  // filter buttons
+  document.querySelectorAll(".filter-btn").forEach(btn=>{
+    btn.onclick = ()=>{
+      document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("text-[#a83f39]","border-b","border-[#a83f39]"));
+      btn.classList.add("text-[#a83f39]","border-b","border-[#a83f39]");
+      renderGalleryCached();
+    };
+  });
+
+  // ========= ARTWORK MODAL =========
+  const imgModal = document.getElementById("imgModal");
+  const modalImages = document.getElementById("modalImagesContainer");
+  const modalTitle = document.getElementById("modalTitle");
+  const modalDesc = document.getElementById("modalDesc");
+  const modalStatus = document.getElementById("modalStatus");
+  const likeCount = document.getElementById("likeCount");
+  const likeBtn = document.getElementById("likeBtn");
+  const commentHint = document.getElementById("commentHint");
+
+  document.getElementById("closeImgModal").onclick = ()=>closeArtworkModal();
+  function closeArtworkModal(){
+    imgModal.classList.add("hidden");
+    document.body.style.overflow = "auto";
+    currentArtwork = null;
+  }
+
+  function openArtworkModal(art){
+    currentArtwork = art;
+    modalImages.innerHTML = "";
+
+    (art.images||[]).forEach(src=>{
+      const img = document.createElement("img");
+      img.src = src;
+      img.className = "w-full h-auto object-contain shadow-2xl border-4 border-stone-800";
+      modalImages.appendChild(img);
+    });
+
+    modalTitle.innerText = (currentLang==="zh" ? art.title_zh : art.title_en) || "";
+    modalDesc.innerText = (currentLang==="zh" ? art.desc_zh : art.desc_en) || "";
+    modalStatus.innerText = art.status || "Available";
+    likeCount.innerText = art.likes || 0;
+
+    // admin panel
+    const adminPanel = document.getElementById("img-admin-edit-panel");
+    if(isAdmin){
+      adminPanel.classList.remove("hidden");
+      document.getElementById("modal-status-select").value = art.status || "Available";
+    }else{
+      adminPanel.classList.add("hidden");
+    }
+
+    // comment availability
+    if(!currentUser){
+      commentHint.classList.remove("hidden");
+    }else{
+      commentHint.classList.add("hidden");
+    }
+
+    loadComments(art.id);
+    imgModal.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+    lucide.createIcons();
+  }
+
+  // ========= COMMENTS =========
+  const commentsList = document.getElementById("comments-list");
+  const postBtn = document.getElementById("postCommentBtn");
+  postBtn.onclick = async ()=>{
+    if(!currentUser) return alert("Please sign in first.");
+    if(!currentArtwork) return;
+    const txt = document.getElementById("new-comment-input").value.trim();
+    if(!txt) return;
+
+    await addDoc(collection(db, COMMENTS), {
+      artworkId: currentArtwork.id,
+      text: txt,
+      uid: currentUser.uid,
+      userName: currentUser.displayName || "User",
+      createdAt: serverTimestamp()
+    });
+    document.getElementById("new-comment-input").value = "";
+  };
+
+  function loadComments(artId){
+    commentsList.innerHTML = `<div class="text-stone-400 text-sm">Loading...</div>`;
+    const q = query(collection(db, COMMENTS), orderBy("createdAt","desc"));
+    onSnapshot(q, (snap)=>{
+      commentsList.innerHTML = "";
+      let count = 0;
+      snap.forEach(d=>{
+        const c = d.data();
+        if(c.artworkId !== artId) return;
+        count++;
+        const div = document.createElement("div");
+        div.className = "bg-stone-800 p-2 rounded text-sm";
+        div.innerHTML = `<span class="text-[#a83f39] font-semibold">${escapeHtml(c.userName||"User")}:</span> ${escapeHtml(c.text)}`;
+        commentsList.appendChild(div);
+      });
+      if(count===0){
+        commentsList.innerHTML = `<div class="text-stone-400 text-sm">No comments yet.</div>`;
+      }
+    });
+  }
+
+  // ========= LIKE =========
+  likeBtn.onclick = async ()=>{
+    if(!currentUser) return alert("Please sign in first.");
+    if(!currentArtwork) return;
+
+    // 防止重复点赞：用 likes/{artId}_{uid} 作为记录
+    const likeKey = `${currentArtwork.id}_${currentUser.uid}`;
+    const likeRef = doc(db, "likes", likeKey);
+    const already = await getDoc(likeRef);
+    if(already.exists()) return alert("You already liked this.");
+
+    // 写点赞记录
+    await setDoc(likeRef, { artworkId: currentArtwork.id, uid: currentUser.uid, createdAt: serverTimestamp() });
+
+    // artworks.likes +1
+    const artRef = doc(db, ARTWORKS, currentArtwork.id);
+    const snap = await getDoc(artRef);
+    const cur = snap.data()?.likes || 0;
+    await updateDoc(artRef, { likes: cur + 1 });
+
+    likeCount.innerText = cur + 1;
+  };
+
+  // ========= ADMIN: UPDATE STATUS / DELETE =========
+  document.getElementById("updateStatusBtn").onclick = async ()=>{
+    if(!isAdmin) return alert("Admin only.");
+    if(!currentArtwork) return;
+
+    const status = document.getElementById("modal-status-select").value;
+    await updateDoc(doc(db, ARTWORKS, currentArtwork.id), { status });
+    modalStatus.innerText = status;
+    alert("Status updated!");
+  };
+
+  document.getElementById("deleteArtworkBtn").onclick = async ()=>{
+    if(!isAdmin) return alert("Admin only.");
+    if(!currentArtwork) return;
+    if(!confirm("Delete this artwork permanently?")) return;
+
+    try{
+      // 删除 storage 图片
+      const paths = currentArtwork.imagePaths || [];
+      for(const p of paths){
+        await deleteObject(ref(storage, p)).catch(()=>{});
+      }
+      // 删除 firestore 文档
+      await deleteDoc(doc(db, ARTWORKS, currentArtwork.id));
+      alert("Deleted!");
+      closeArtworkModal();
+    }catch(e){
+      alert("Delete failed: " + e.message);
+    }
+  };
+
+  // ========= ADMIN: ADD ARTWORK (STORAGE UPLOAD) =========
+  const addModal = document.getElementById("addModal");
+  document.getElementById("add-artwork-fab").onclick = ()=>{
+    if(!isAdmin) return alert("Admin only.");
+    addModal.classList.remove("hidden");
+  };
+  document.getElementById("closeAddModal").onclick = ()=>addModal.classList.add("hidden");
+
+  let uploadFiles = [];
+  const dropArea = document.getElementById("drop-area");
+  const fileElem = document.getElementById("fileElem");
+  const previews = document.getElementById("upload-previews");
+
+  function showPreviews(files){
+    previews.innerHTML = "";
+    Array.from(files).forEach(f=>{
+      const url = URL.createObjectURL(f);
+      const img = document.createElement("img");
+      img.src = url;
+      img.className = "h-full w-auto rounded border";
+      previews.appendChild(img);
+    });
+  }
+
+  dropArea.addEventListener("dragover",(e)=>{
+    e.preventDefault();
+    dropArea.classList.add("dragover");
+  });
+  dropArea.addEventListener("dragleave",()=>{
+    dropArea.classList.remove("dragover");
+  });
+  dropArea.addEventListener("drop",(e)=>{
+    e.preventDefault();
+    dropArea.classList.remove("dragover");
+    if(!isAdmin) return;
+    uploadFiles = Array.from(e.dataTransfer.files).filter(f=>f.type.startsWith("image/"));
+    showPreviews(uploadFiles);
+  });
+  fileElem.addEventListener("change",(e)=>{
+    uploadFiles = Array.from(e.target.files).filter(f=>f.type.startsWith("image/"));
+    showPreviews(uploadFiles);
+  });
+
+  document.getElementById("publishArtworkBtn").onclick = async ()=>{
+    if(!isAdmin) return alert("Admin only.");
+    const zh = document.getElementById("new-title-zh").value.trim();
+    const en = document.getElementById("new-title-en").value.trim() || zh;
+    const dzh = document.getElementById("new-desc-zh").value.trim();
+    const den = document.getElementById("new-desc-en").value.trim();
+    const cat = document.getElementById("new-category").value;
+
+    if(!zh) return alert("Chinese title is required.");
+    if(uploadFiles.length===0) return alert("Please upload at least 1 image.");
+
+    try{
+      const urls = [];
+      const paths = [];
+      for(const f of uploadFiles){
+        const p = `artworks/${Date.now()}_${Math.random().toString(16).slice(2)}_${f.name}`;
+        const r = ref(storage, p);
+        await uploadBytes(r, f);
+        const url = await getDownloadURL(r);
+        urls.push(url);
+        paths.push(p);
+      }
+
+      await addDoc(collection(db, ARTWORKS), {
+        title_zh: zh,
+        title_en: en,
+        desc_zh: dzh,
+        desc_en: den,
+        category: cat,
+        images: urls,
+        imagePaths: paths,
+        status: "Available",
+        likes: 0,
+        createdAt: serverTimestamp()
+      });
+
+      addModal.classList.add("hidden");
+      uploadFiles = [];
+      previews.innerHTML = "";
+      fileElem.value = "";
+      alert("Published!");
+    }catch(e){
+      alert("Publish failed: " + e.message);
+    }
+  };
+
+  // ========= ADMIN: USERS LIST =========
+  document.getElementById("viewUsersBtn").onclick = async ()=>{
+    if(!isAdmin) return alert("Admin only.");
+    const box = document.getElementById("userListBox");
+    const list = document.getElementById("userList");
+    box.classList.toggle("hidden");
+
+    if(box.classList.contains("hidden")) return;
+
+    list.innerHTML = `<div class="text-stone-400">Loading...</div>`;
+    const snap = await getDocs(query(collection(db, USERS), orderBy("createdAt","desc")));
+    list.innerHTML = "";
+    if(snap.empty){
+      list.innerHTML = `<div class="text-stone-400">No users.</div>`;
+      return;
+    }
+    snap.forEach(d=>{
+      const u = d.data();
+      const div = document.createElement("div");
+      div.className = "flex justify-between border-b border-stone-200 pb-1";
+      const date = u.createdAt?.seconds ? new Date(u.createdAt.seconds*1000).toLocaleString() : "";
+      div.innerHTML = `<span>${escapeHtml(u.nickname||"")} <span class="text-stone-400">(${escapeHtml(u.email||"")})</span></span><span class="text-stone-400">${date}</span>`;
+      list.appendChild(div);
+    });
+  };
+
+  // ========= ADMIN: SEED / RESET =========
+  document.getElementById("seedBtn").onclick = async ()=>{
+    if(!isAdmin) return alert("Admin only.");
+    const seeds = [
+      {
+        title_zh:"《荷塘月色》", title_en:"Moonlight",
+        desc_zh:"66cm x 66cm | 绢本", desc_en:"66cm x 66cm | Silk",
+        status:"Sold", category:"bird_flower",
+        images:["https://images.unsplash.com/photo-1599579634024-e9109033285e?q=80&w=1400&auto=format&fit=crop"],
+        imagePaths:[],
+        likes:32
+      },
+      {
+        title_zh:"《锦瑟年华》", title_en:"Beautiful Years",
+        desc_zh:"45cm x 90cm | 纸本", desc_en:"45cm x 90cm | Paper",
+        status:"Available", category:"flower",
+        images:["https://images.unsplash.com/photo-1535359056830-d4badde79747?q=80&w=1400&auto=format&fit=crop"],
+        imagePaths:[],
+        likes:28
+      },
+      {
+        title_zh:"《孔雀》", title_en:"Peacock",
+        desc_zh:"水墨", desc_en:"Ink",
+        status:"Available", category:"animal",
+        images:["https://images.unsplash.com/photo-1502786932785-5c991e63d3fb?q=80&w=1400&auto=format&fit=crop"],
+        imagePaths:[],
+        likes:22
+      }
+    ];
+    const batch = writeBatch(db);
+    seeds.forEach(s=>{
+      batch.set(doc(collection(db, ARTWORKS)), { ...s, createdAt: serverTimestamp() });
+    });
+    await batch.commit();
+    alert("Seeded!");
+  };
+
+  document.getElementById("resetArtBtn").onclick = async ()=>{
+    if(!isAdmin) return alert("Admin only.");
+    if(!confirm("Delete ALL artworks in Firestore? (Storage images will NOT be removed automatically)")) return;
+    const snap = await getDocs(collection(db, ARTWORKS));
+    const batch = writeBatch(db);
+    snap.forEach(d=>batch.delete(d.ref));
+    await batch.commit();
+    alert("All artworks deleted in Firestore.");
+  };
+
+  // ========= AUTH STATE =========
+  onAuthStateChanged(auth, async (user)=>{
+    currentUser = user || null;
+
+    const nameEl = document.getElementById("user-name-display");
+    const openAdminBtn = document.getElementById("openAdminBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    if(!user){
+      isAdmin = false;
+      document.body.classList.remove("is-admin");
+      openAdminBtn.classList.add("hidden");
+      logoutBtn.classList.add("hidden");
+      nameEl.innerText = (currentLang==="zh") ? "登录/注册" : "Sign In";
+      return;
+    }
+
+    // Refresh verified
+    await user.reload();
+
+    // Determine admin
+    isAdmin = ADMIN_EMAILS.includes(user.email) && user.emailVerified;
+
+    if(isAdmin){
+      document.body.classList.add("is-admin");
+      openAdminBtn.classList.remove("hidden");
+    }else{
+      document.body.classList.remove("is-admin");
+      openAdminBtn.classList.add("hidden");
+    }
+
+    logoutBtn.classList.remove("hidden");
+    nameEl.innerText = user.displayName || user.email;
+
+    // ensure users doc exists / sync nickname
+    const uref = doc(db, USERS, user.uid);
+    const usnap = await getDoc(uref);
+    if(!usnap.exists()){
+      await setDoc(uref,{
+        uid:user.uid,
+        email:user.email,
+        nickname:user.displayName || "User",
+        createdAt: serverTimestamp(),
+        emailVerified:user.emailVerified
+      });
+    }else{
+      await updateDoc(uref,{
+        nickname:user.displayName || usnap.data().nickname || "User",
+        emailVerified:user.emailVerified
+      }).catch(()=>{});
+    }
+
+    // comment hint
+    commentHint.classList.add("hidden");
+  });
+
+  // ========= INIT =========
+  applyLanguage();
+  loadSiteConfig();
+  loadArtist();
+  lucide.createIcons();
 </script>
 
 </body>
